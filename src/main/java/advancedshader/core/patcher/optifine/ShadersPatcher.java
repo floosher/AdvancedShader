@@ -18,7 +18,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("<clinit>()V")
     public void clinit(MethodNode method) {
-        patch("添加更多Uniforms", method,
+        patch("Add more uniforms", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "shaderUniforms", "Lnet/optifine/shaders/uniform/ShaderUniforms;"),
                 ByteCode.Ldc("instanceId"),
                 ByteCode.InvokeVirtual("net/optifine/shaders/uniform/ShaderUniforms", "make1i", "(Ljava/lang/String;)Lnet/optifine/shaders/uniform/ShaderUniform1i;"),
@@ -26,7 +26,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "shaderUniforms", "Lnet/optifine/shaders/uniform/ShaderUniforms;")),
                 inject(ByteCode.InvokeStatic(HOOK, "addUniforms", "(Lnet/optifine/shaders/uniform/ShaderUniforms;)V")));
 
-        patch("添加更多Programs", method,
+        patch("Add more programs", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "programs", "Lnet/optifine/shaders/Programs;"),
                 ByteCode.Ldc("final"),
                 ByteCode.InvokeVirtual("net/optifine/shaders/Programs", "makeComposite", "(Ljava/lang/String;)Lnet/optifine/shaders/Program;"),
@@ -34,7 +34,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "programs", "Lnet/optifine/shaders/Programs;")),
                 inject(ByteCode.InvokeStatic(HOOK, "addPrograms", "(Lnet/optifine/shaders/Programs;)V")));
 
-        patch("增加colortex8-15纹理配置", method,
+        patch("Add colortex8-15 texture configuration", method,
                 remove(ByteCode.BIPush(8)),
                 inject(ByteCode.BIPush(16)),
                 ByteCode.NewArray(ByteCode.T_INT),
@@ -52,7 +52,7 @@ public class ShadersPatcher extends Patcher {
                 ByteCode.NewArray("org/lwjgl/util/vector/Vector4f"),
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "gbuffersClearColor", "[Lorg/lwjgl/util/vector/Vector4f;"));
 
-        patch("为colortex8-15分配纹理单元", method,
+        patch("Allocate texture units for colortex8-15", method,
                 remove(ByteCode.BIPush(8)),
                 inject(ByteCode.BIPush(16)),
                 ByteCode.NewArray(ByteCode.T_INT),
@@ -122,9 +122,9 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.IAStore()),
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "colorTextureImageUnit", "[I"));
 
-        patch("连续地址缓冲区扩容", method,
+        patch("Expand continuous address buffer", method,
                 remove(ByteCode.SIPush(285)),
-                inject(ByteCode.SIPush(285 + 8 * 2)), // 8个dfb纹理ping-pong
+                inject(ByteCode.SIPush(285 + 8 * 2)), // 8 dfb texture ping-pong
                 ByteCode.BIPush(8),
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "ProgramCount", "I"),
                 ByteCode.IMul(),
@@ -133,13 +133,13 @@ public class ShadersPatcher extends Patcher {
                 ByteCode.IMul(),
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "bigBufferSize", "I"));
 
-        patch("增加帧缓冲纹理数量至32", method,
+        patch("Increase framebuffer texture count to 32", method,
                 remove(ByteCode.BIPush(16)),
                 inject(ByteCode.BIPush(32)),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "nextIntBuffer", "(I)Ljava/nio/IntBuffer;"),
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "dfbColorTextures", "Ljava/nio/IntBuffer;"));
 
-        patch("增加Ping-Pong帧缓冲数量至16", method,
+        patch("Increase Ping-Pong framebuffer count to 16", method,
                 ByteCode.New("net/optifine/shaders/FlipTextures"),
                 ByteCode.Dup(),
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "dfbColorTextures", "Ljava/nio/IntBuffer;"),
@@ -147,21 +147,21 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.BIPush(16)),
                 ByteCode.InvokeSpecial("net/optifine/shaders/FlipTextures", "<init>", "(Ljava/nio/IntBuffer;I)V"));
 
-        patch("100个Deferred着色器", method,
+        patch("100 Deferred shaders", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "programs", "Lnet/optifine/shaders/Programs;"),
                 ByteCode.Ldc("deferred"),
                 remove(ByteCode.BIPush(16)),
                 inject(ByteCode.BIPush(100)),
                 ByteCode.InvokeVirtual("net/optifine/shaders/Programs", "makeDeferreds", "(Ljava/lang/String;I)[Lnet/optifine/shaders/Program;"));
 
-        patch("100个Composite着色器", method,
+        patch("100 Composite shaders", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "programs", "Lnet/optifine/shaders/Programs;"),
                 ByteCode.Ldc("composite"),
                 remove(ByteCode.BIPush(16)),
                 inject(ByteCode.BIPush(100)),
                 ByteCode.InvokeVirtual("net/optifine/shaders/Programs", "makeComposites", "(Ljava/lang/String;I)[Lnet/optifine/shaders/Program;"));
 
-        patch("增加 8bits 与 16bits 整数型纹理格式 第一部分", method,
+        patch("Add 8bits and 16bits integer texture formats part 1", method,
                 remove(ByteCode.BIPush(37)),
                 inject(ByteCode.BIPush(53)),
                 ByteCode.NewArray("java/lang/String"),
@@ -169,7 +169,7 @@ public class ShadersPatcher extends Patcher {
                 ByteCode.IConst(0),
                 ByteCode.Ldc("R8"));
 
-        patch("增加 8bits 与 16bits 整数型纹理格式 第二部分", method,
+        patch("Add 8bits and 16bits integer texture formats part 2", method,
                 ByteCode.Ldc("RGB9_E5"),
                 ByteCode.AAStore(),
                 inject(ByteCode.Dup()),
@@ -238,7 +238,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.AAStore()),
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "formatNames", "[Ljava/lang/String;"));
 
-        patch("增加 8bits 与 16bits 整数型纹理格式 第三部分", method,
+        patch("Add 8bits and 16bits integer texture formats part 3", method,
                 remove(ByteCode.BIPush(37)),
                 inject(ByteCode.BIPush(53)),
                 ByteCode.NewArray(ByteCode.T_INT),
@@ -246,7 +246,7 @@ public class ShadersPatcher extends Patcher {
                 ByteCode.IConst(0),
                 ByteCode.Ldc(GL30.GL_R8));
 
-        patch("增加 8bits 与 16bits 整数型纹理格式 第四部分", method,
+        patch("Add 8bits and 16bits integer texture formats part 4", method,
                 ByteCode.Ldc(GL30.GL_RGB9_E5),
                 ByteCode.IAStore(),
                 inject(ByteCode.Dup()),
@@ -315,7 +315,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.IAStore()),
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "formatIds", "[I"));
 
-        patch("增加Prepare和ShadowComp纹理Stages", method,
+        patch("Add Prepare and ShadowComp texture Stages", method,
                 remove(ByteCode.IConst(3)),
                 inject(ByteCode.IConst(5)),
                 ByteCode.NewArray("java/lang/String"),
@@ -341,7 +341,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.AAStore()),
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "STAGE_NAMES", "[Ljava/lang/String;"));
 
-        patch("为阴影渲染创建ping-pong缓冲区", method,
+        patch("Create ping-pong buffer for shadow rendering", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "dfbColorTexturesFlip", "Lnet/optifine/shaders/FlipTextures;"),
                 inject(ByteCode.New(SHADOWFILPTEXTURES)),
                 inject(ByteCode.Dup()),
@@ -349,47 +349,47 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.InvokeSpecial(SHADOWFILPTEXTURES, "<init>", "(Ljava/nio/IntBuffer;)V")),
                 inject(ByteCode.PutStatic(HOOK, "sfbColorTexturesFlip", "Lnet/optifine/shaders/FlipTextures;")));
 
-        patch("复制变量 colorTextureImageUnit", method,
+        patch("Copy variable colorTextureImageUnit", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "colorTextureImageUnit", "[I"),
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "colorTextureImageUnit", "[I")),
                 inject(ByteCode.PutStatic(HOOK, "colorTextureImageUnit", "[I")));
 
-        patch("复制变量 dfbColorTexturesFlip", method,
+        patch("Copy variable dfbColorTexturesFlip", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "dfbColorTexturesFlip", "Lnet/optifine/shaders/FlipTextures;"),
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "dfbColorTexturesFlip", "Lnet/optifine/shaders/FlipTextures;")),
                 inject(ByteCode.PutStatic(HOOK, "dfbColorTexturesFlip", "Lnet/optifine/shaders/FlipTextures;")));
 
-        patch("复制变量 sfbDrawBuffers", method,
+        patch("Copy variable sfbDrawBuffers", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "sfbDrawBuffers", "Ljava/nio/IntBuffer;"),
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "sfbDrawBuffers", "Ljava/nio/IntBuffer;")),
                 inject(ByteCode.PutStatic(HOOK, "sfbDrawBuffers", "Ljava/nio/IntBuffer;")));
 
-        patch("复制变量 gbuffersFormat", method,
+        patch("Copy variable gbuffersFormat", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "gbuffersFormat", "[I"),
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "gbuffersFormat", "[I")),
                 inject(ByteCode.PutStatic(HOOK, "gbuffersFormat", "[I")));
 
-        patch("复制变量 modelView", method,
+        patch("Copy variable modelView", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "modelView", "Ljava/nio/FloatBuffer;"),
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "modelView", "Ljava/nio/FloatBuffer;")),
                 inject(ByteCode.PutStatic(HOOK, "modelView", "Ljava/nio/FloatBuffer;")));
 
-        patch("复制变量 modelViewInverse", method,
+        patch("Copy variable modelViewInverse", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "modelViewInverse", "Ljava/nio/FloatBuffer;"),
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "modelViewInverse", "Ljava/nio/FloatBuffer;")),
                 inject(ByteCode.PutStatic(HOOK, "modelViewInverse", "Ljava/nio/FloatBuffer;")));
 
-        patch("复制变量 shadowModelView", method,
+        patch("Copy variable shadowModelView", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "shadowModelView", "Ljava/nio/FloatBuffer;"),
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "shadowModelView", "Ljava/nio/FloatBuffer;")),
                 inject(ByteCode.PutStatic(HOOK, "shadowModelView", "Ljava/nio/FloatBuffer;")));
 
-        patch("复制变量 shadowModelViewInverse", method,
+        patch("Copy variable shadowModelViewInverse", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "shadowModelViewInverse", "Ljava/nio/FloatBuffer;"),
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "shadowModelViewInverse", "Ljava/nio/FloatBuffer;")),
                 inject(ByteCode.PutStatic(HOOK, "shadowModelViewInverse", "Ljava/nio/FloatBuffer;")));
 
-        patch("复制变量 tempMatrixDirectBuffer", method,
+        patch("Copy variable tempMatrixDirectBuffer", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "tempMatrixDirectBuffer", "Ljava/nio/FloatBuffer;"),
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "tempMatrixDirectBuffer", "Ljava/nio/FloatBuffer;")),
                 inject(ByteCode.PutStatic(HOOK, "tempMatrixDirectBuffer", "Ljava/nio/FloatBuffer;")));
@@ -397,7 +397,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("initDrawBuffers(Lnet/optifine/shaders/Program;)V")
     public void initDrawBuffers(MethodNode method) {
-        patch("限制usedDrawBuffers大小", method,
+        patch("Limit usedDrawBuffers size", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "usedColorBuffers", "I"),
                 inject(ByteCode.BIPush(8)),
                 inject(ByteCode.InvokeStatic("java/lang/Math", "min", "(II)I")),
@@ -406,7 +406,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("getDrawBuffer(Lnet/optifine/shaders/Program;Ljava/lang/String;I)I")
     public void getDrawBuffer(MethodNode method) {
-        patch("修改DrawBuffer计算逻辑并扩大RenderTarget可用范围", method,
+        patch("Modify DrawBuffer calculation logic and expand RenderTarget usable range", method,
                 ByteCode.ILoad(4),
                 remove(ByteCode.BIPush(7)),
                 inject(ByteCode.BIPush(15)),
@@ -424,7 +424,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.ILoad(2)),
                 ByteCode.Ldc(GL30.GL_COLOR_ATTACHMENT0));
 
-        patch("识别ShadowComp着色器为阴影后处理着色器", method,
+        patch("Recognize ShadowComp shader as shadow postprocessing shader", method,
                 ByteCode.ALoad(0),
                 inject(ByteCode.InvokeVirtual("net/optifine/shaders/Program", "getName", "()Ljava/lang/String;")),
                 inject(ByteCode.Ldc("shadow")),
@@ -433,7 +433,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.GetStatic("java/lang/Boolean", "TRUE", "Ljava/lang/Boolean;")),
                 remove(ByteCode.GetStatic("net/optifine/shaders/Shaders", "ProgramShadow", "Lnet/optifine/shaders/Program;")));
 
-        patch("为ShadowComp写入缓冲区翻转配置", method,
+        patch("Write buffer flip configuration for ShadowComp", method,
                 ByteCode.ILoad(4),
                 ByteCode.IfLessThanZero(null),
                 ByteCode.ILoad(4),
@@ -447,7 +447,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.IConst(1)),
                 inject(ByteCode.BAStore()));
 
-        patch("修复阴影纹理数量错误", method,
+        patch("Fix incorrect shadow texture count", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "usedShadowColorBuffers", "I"),
                 ByteCode.ILoad(4),
                 inject(ByteCode.IConst(1)),
@@ -455,7 +455,7 @@ public class ShadersPatcher extends Patcher {
                 ByteCode.InvokeStatic("java/lang/Math", "max", "(II)I"),
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "usedShadowColorBuffers", "I"));
 
-        patch("修复颜色纹理数量错误", method,
+        patch("Fix incorrect color texture count", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "usedColorAttachs", "I"),
                 ByteCode.ILoad(4),
                 inject(ByteCode.IConst(1)),
@@ -474,7 +474,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("bindGbuffersTextures()V")
     public void bindGbuffersTextures(MethodNode method) {
-        patch("为Gbuffer着色器绑定colortex8-15纹理", method,
+        patch("Bind colortex8-15 textures for Gbuffer shaders", method,
                 remove(ByteCode.ILoad(0)),
                 remove(ByteCode.IConst(4)),
                 remove(ByteCode.IfIntGreaterEqual(null)),
@@ -497,7 +497,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("useProgram(Lnet/optifine/shaders/Program;)V")
     public void useProgram(MethodNode method) {
-        patch("绑定颜色缓冲", method,
+        patch("Bind color buffers", method,
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.InvokeStatic(MOREBUFFERS, "attachColorBuffer", "(Lnet/optifine/shaders/Program;)V")),
                 ByteCode.ALoad(0),
@@ -507,7 +507,7 @@ public class ShadersPatcher extends Patcher {
         LabelNode nvl = ByteCode.Label();
         LabelNode call = ByteCode.Label();
 
-        patch("设定新Uniform值", method,
+        patch("Set new uniform values", method,
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "hasDeferredPrograms", "Z")),
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "customTexturesGbuffers", "[Lnet/optifine/shaders/ICustomTexture;")),
@@ -531,7 +531,7 @@ public class ShadersPatcher extends Patcher {
         LabelNode failed13 = ByteCode.Label();
         LabelNode failed14 = ByteCode.Label();
         LabelNode failed15 = ByteCode.Label();
-        patch("识别colortex8-15配置", method,
+        patch("Recognize colortex8-15 configurations", method,
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.Ldc("colortex8")),
                 inject(ByteCode.InvokeVirtual("java/lang/String", "equals", "(Ljava/lang/Object;)Z")),
@@ -594,7 +594,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("setupFrameBuffer()V")
     public void setupFrameBuffer(MethodNode method) {
-        patch("增加申请的纹理ID数量16 -> 32", method,
+        patch("Increase requested texture ID count 16 -> 32", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "dfbColorTextures", "Ljava/nio/IntBuffer;"),
                 ByteCode.InvokeVirtual("java/nio/IntBuffer", "clear", "()Ljava/nio/Buffer;"),
                 remove(ByteCode.BIPush(16)),
@@ -606,7 +606,7 @@ public class ShadersPatcher extends Patcher {
         LabelNode label1 = ByteCode.Label();
         LabelNode label2 = ByteCode.Label();
 
-        patch("增加颜色纹理初始化绑定判断（colortex8-16与size.buffer） 第一部分", method,
+        patch("Add color texture initialization binding check (colortex8-16 and size.buffer) part 1", method,
                 inject(ByteCode.ILoad(0)),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "shouldBindForSetup", "(I)Z")),
                 inject(ByteCode.IfZero(label1)),
@@ -622,7 +622,7 @@ public class ShadersPatcher extends Patcher {
                 ByteCode.InvokeStatic("org/lwjgl/opengl/EXTFramebufferObject", "glFramebufferTexture2DEXT", "(IIIII)V"),
                 inject(label1));
 
-        patch("增加颜色纹理初始化绑定判断（colortex8-16与size.buffer） 第二部分", method,
+        patch("Add color texture initialization binding check (colortex8-16 and size.buffer) part 2", method,
                 inject(ByteCode.ILoad(1)),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "shouldBindForSetup", "(I)Z")),
                 inject(ByteCode.IfZero(label2)),
@@ -638,7 +638,7 @@ public class ShadersPatcher extends Patcher {
                 ByteCode.InvokeStatic("org/lwjgl/opengl/EXTFramebufferObject", "glFramebufferTexture2DEXT", "(IIIII)V"),
                 inject(label2));
 
-        patch("根据size.buffer修改纹理大小 第一部分", method,
+        patch("Modify texture size according to size.buffer part 1", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "gbuffersFormat", "[I"),
                 ByteCode.ILoad(0),
                 ByteCode.IALoad(),
@@ -649,7 +649,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.ILoad(0)),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "getResizedHeight", "(II)I")));
 
-        patch("根据size.buffer修改纹理大小 第二部分", method,
+        patch("Modify texture size according to size.buffer part 2", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "gbuffersFormat", "[I"),
                 ByteCode.ILoad(0),
                 ByteCode.IALoad(),
@@ -660,7 +660,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.ILoad(0)),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "getResizedHeight", "(II)I")));
 
-        patch("根据size.buffer修改纹理大小 第三部分", method,
+        patch("Modify texture size according to size.buffer part 3", method,
                 ByteCode.SIPush(GL11.GL_RGBA),
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "renderWidth", "I"),
                 inject(ByteCode.ILoad(1)),
@@ -669,18 +669,18 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.ILoad(1)),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "getResizedHeight", "(II)I")));
 
-        patch("初始化size.buffer专用帧缓冲", method,
+        patch("Initialize size.buffer dedicated framebuffer", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "dfb", "I"),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "initDynamicDimensions", "()V")));
     }
 
     @MethodPatch("uninit()V")
     public void uninit(MethodNode method) {
-        patch("删除size.buffer专用帧缓冲", method,
+        patch("Delete size.buffer dedicated framebuffer", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "dfb", "I"),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "uninitDynamicDimensions", "()V")));
 
-        patch("删除计算着色器", method,
+        patch("Delete compute shader", method,
                 ByteCode.ALoad(1),
                 ByteCode.IConst(0),
                 ByteCode.InvokeVirtual("net/optifine/shaders/Program", "setCompositeMipmapSetting", "(I)V"),
@@ -692,7 +692,7 @@ public class ShadersPatcher extends Patcher {
     public void beginRender(MethodNode method) {
         LabelNode label1 = ByteCode.Label();
 
-        patch("增加帧缓冲纹理绑定判断（colortex8-16与size.buffer）", method,
+        patch("Add framebuffer texture binding check (colortex8-16 and size.buffer)", method,
                 ByteCode.IConst(0),
                 ByteCode.IStore(5),
                 ByteCode.Label(),
@@ -720,7 +720,7 @@ public class ShadersPatcher extends Patcher {
                 ByteCode.LineNumber(),
                 ByteCode.Inc(5, 1));
 
-        patch("重置渲染阶段配置", method,
+        patch("Reset render stage configuration", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),
@@ -732,8 +732,8 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("clearRenderBuffer()V")
     public void clearRenderBuffer(MethodNode method) {
-        // 防止1286
-        patch("确保0号颜色附件已绑定", method,
+        // Prevent 1286
+        patch("Ensure color attachment 0 is bound", method,
                 remove(ByteCode.Ldc(GL30.GL_FRAMEBUFFER)),
                 remove(ByteCode.Ldc(GL30.GL_COLOR_ATTACHMENT0)),
                 remove(ByteCode.SIPush(GL11.GL_TEXTURE_2D)),
@@ -753,8 +753,8 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.InvokeVirtual("net/optifine/shaders/FlipTextures", "getA", "(I)I")),
                 inject(ByteCode.IConst(0)),
                 inject(ByteCode.InvokeStatic("org/lwjgl/opengl/EXTFramebufferObject", "glFramebufferTexture2DEXT", "(IIIII)V")));
-        // 同上
-        patch("确保1号颜色附件已绑定", method,
+        // Same as above
+        patch("Ensure color attachment 1 is bound", method,
                 remove(ByteCode.Ldc(GL30.GL_FRAMEBUFFER)),
                 remove(ByteCode.Ldc(GL30.GL_COLOR_ATTACHMENT1)),
                 remove(ByteCode.SIPush(GL11.GL_TEXTURE_2D)),
@@ -775,8 +775,8 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.IConst(0)),
                 inject(ByteCode.InvokeStatic("org/lwjgl/opengl/EXTFramebufferObject", "glFramebufferTexture2DEXT", "(IIIII)V")));
 
-        // 防止1282
-        patch("glClear清理colortex2-15纹理内容时将其绑定至2号颜色缓冲区", method,
+        // Prevent 1282
+        patch("Bind colortex2-15 texture to color buffer 2 when glClear clears it", method,
                 ByteCode.Ldc(GL30.GL_FRAMEBUFFER),
                 remove(ByteCode.Ldc(GL30.GL_COLOR_ATTACHMENT0)),
                 remove(ByteCode.ILoad(0)),
@@ -801,7 +801,7 @@ public class ShadersPatcher extends Patcher {
                 ByteCode.InvokeStatic("org/lwjgl/opengl/GL11", "glClear", "(I)V"),
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
-                // 挪到括号外
+                // Move outside parentheses
                 remove(ByteCode.Ldc(GL30.GL_FRAMEBUFFER)),
                 remove(ByteCode.Ldc(GL30.GL_COLOR_ATTACHMENT0)),
                 remove(ByteCode.ILoad(0)),
@@ -829,7 +829,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.Ldc(GL30.GL_COLOR_ATTACHMENT2)),
                 ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glDrawBuffers", "(I)V"));
 
-        patch("根据size.buffer切换帧缓冲 第一部分", method,
+        patch("Switch framebuffer according to size.buffer part 1", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "gbuffersClear", "[Z"),
                 ByteCode.IConst(0),
                 ByteCode.BALoad(),
@@ -839,7 +839,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.IConst(0)),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "switchFramebuffer", "(I)V")));
 
-        patch("根据size.buffer切换帧缓冲 第二部分", method,
+        patch("Switch framebuffer according to size.buffer part 2", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "gbuffersClear", "[Z"),
                 ByteCode.IConst(1),
                 ByteCode.BALoad(),
@@ -849,7 +849,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.IConst(1)),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "switchFramebuffer", "(I)V")));
 
-        patch("根据size.buffer切换帧缓冲 第三部分", method,
+        patch("Switch framebuffer according to size.buffer part 3", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "gbuffersClear", "[Z"),
                 ByteCode.ILoad(0),
                 ByteCode.BALoad(),
@@ -863,7 +863,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.ILoad(0)),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "switchFramebuffer", "(I)V")));
 
-        patch("根据size.buffer切换帧缓冲 第四部分", method,
+        patch("Switch framebuffer according to size.buffer part 4", method,
                 inject(ByteCode.IConst(-1)),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "switchFramebuffer", "(I)V")),
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "dfbDrawBuffers", "Ljava/nio/IntBuffer;"),
@@ -872,8 +872,8 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("renderDeferred()V")
     public void renderDeferred(MethodNode method) {
-        // 防止1282
-        patch("移除原有帧缓冲纹理绑定", method,
+        // Prevent 1282
+        patch("Remove original framebuffer texture binding", method,
                 remove(ByteCode.Ldc(GL30.GL_FRAMEBUFFER)),
                 remove(ByteCode.Ldc(GL30.GL_COLOR_ATTACHMENT0)),
                 remove(ByteCode.ILoad(1)),
@@ -888,8 +888,8 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("renderComposites([Lnet/optifine/shaders/Program;Z)V")
     public void renderComposites(MethodNode method) {
-        // 防止1282
-        patch("移除原有帧缓冲纹理绑定", method,
+        // Prevent 1282
+        patch("Remove original framebuffer texture binding", method,
                 remove(ByteCode.Ldc(GL30.GL_FRAMEBUFFER)),
                 remove(ByteCode.Ldc(GL30.GL_COLOR_ATTACHMENT0)),
                 remove(ByteCode.ILoad(2)),
@@ -916,7 +916,7 @@ public class ShadersPatcher extends Patcher {
                 remove(ByteCode.IConst(0)),
                 remove(ByteCode.InvokeStatic("org/lwjgl/opengl/EXTFramebufferObject", "glFramebufferTexture2DEXT", "(IIIII)V")));
 
-        patch("移除翻转后帧缓冲纹理绑定", method,
+        patch("Remove flipped framebuffer texture binding", method,
                 remove(ByteCode.Ldc(GL30.GL_FRAMEBUFFER)),
                 remove(ByteCode.Ldc(GL30.GL_COLOR_ATTACHMENT0)),
                 remove(ByteCode.ILoad(4)),
@@ -928,13 +928,13 @@ public class ShadersPatcher extends Patcher {
                 remove(ByteCode.IConst(0)),
                 remove(ByteCode.InvokeStatic("org/lwjgl/opengl/EXTFramebufferObject", "glFramebufferTexture2DEXT", "(IIIII)V")));
 
-        patch("增加Prepare和ShadowComp自定义纹理", method,
+        patch("Add Prepare and ShadowComp custom textures", method,
                 inject(ByteCode.ALoad(0)),
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "customTexturesDeferred", "[Lnet/optifine/shaders/ICustomTexture;"),
                 inject(ByteCode.InvokeStatic(MORESTAGES, "getCustomTextures", "([Lnet/optifine/shaders/Program;[Lnet/optifine/shaders/ICustomTexture;)[Lnet/optifine/shaders/ICustomTexture;")),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "bindCustomTextures", "([Lnet/optifine/shaders/ICustomTexture;)V"));
 
-        patch("为ShadowComp生成Mipmap", method,
+        patch("Generate mipmap for ShadowComp", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "genCompositeMipmap", "()V"),
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
@@ -945,7 +945,7 @@ public class ShadersPatcher extends Patcher {
         LabelNode label1 = ByteCode.Label();
         LabelNode label2 = ByteCode.Label();
 
-        patch("根据着色阶段选择翻转缓冲区", method,
+        patch("Select flip buffer according to shader stage", method,
                 ByteCode.ILoad(4),
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.GetStatic(HOOK, "programShadowComp", "[Lnet/optifine/shaders/Program;")),
@@ -986,7 +986,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.InvokeStatic(MORESTAGES, "getFlipBuffer", "([Lnet/optifine/shaders/Program;)Lnet/optifine/shaders/FlipTextures;")));
 
-        patch("执行计算着色器", method,
+        patch("Execute compute shader", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 inject(ByteCode.ALoad(3)),
@@ -1002,7 +1002,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("renderFinal()V")
     public void renderFinal(MethodNode method) {
-        patch("执行计算着色器", method,
+        patch("Execute compute shader", method,
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "ProgramFinal", "Lnet/optifine/shaders/Program;")),
                 inject(ByteCode.InvokeStatic(COMPUTESHADER, "dispatchComputes", "(Lnet/optifine/shaders/Program;)V")),
                 method.instructions.getFirst());
@@ -1010,7 +1010,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("createFragShader(Lnet/optifine/shaders/Program;Ljava/lang/String;)I")
     public void createFragShader(MethodNode method) {
-        patch("增加RenderTargets注释匹配", method,
+        patch("Add RenderTargets comment matching", method,
                 ByteCode.Ldc("Invalid draw buffers: "),
                 ByteCode.InvokeVirtual("java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;"),
                 ByteCode.ALoad(10),
@@ -1023,7 +1023,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.InvokeStatic(MOREBUFFERS, "checkRenderTargets", "(Lnet/optifine/shaders/config/ShaderLine;Lnet/optifine/shaders/Program;)V")));
 
-        patch("阴影颜色纹理格式匹配", method,
+        patch("Shadow color texture format matching", method,
                 ByteCode.ALoad(11),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "getTextureFormatFromString", "(Ljava/lang/String;)I"),
                 ByteCode.IStore(13),
@@ -1032,14 +1032,14 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.ALoad(11)),
                 inject(ByteCode.InvokeStatic(MORESTAGES, "parseShadowFormat", "(Ljava/lang/String;ILjava/lang/String;)V")));
 
-        patch("阴影颜色纹理glClear开关匹配", method,
+        patch("Shadow color texture glClear toggle matching", method,
                 ByteCode.Ldc("Clear"),
                 ByteCode.InvokeStatic("net/optifine/util/StrUtils", "removeSuffix", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;"),
                 ByteCode.AStore(10),
                 inject(ByteCode.ALoad(10)),
                 inject(ByteCode.InvokeStatic(MORESTAGES, "parseShadowClear", "(Ljava/lang/String;)V")));
 
-        patch("阴影颜色纹理glClearColor匹配", method,
+        patch("Shadow color texture glClearColor matching", method,
                 ByteCode.Ldc("ClearColor"),
                 ByteCode.InvokeStatic("net/optifine/util/StrUtils", "removeSuffix", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;"),
                 ByteCode.AStore(10),
@@ -1047,7 +1047,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.ALoad(9)),
                 inject(ByteCode.InvokeStatic(MORESTAGES, "parseShadowClearColor", "(Ljava/lang/String;Lnet/optifine/shaders/config/ShaderLine;)V")));
 
-        patch("允许final着色器配置glClear", method,
+        patch("Allow final shader to configure glClear", method,
                 ByteCode.Ldc("Clear"),
                 ByteCode.IConst(0),
                 ByteCode.InvokeVirtual("net/optifine/shaders/config/ShaderLine", "isConstBoolSuffix", "(Ljava/lang/String;Z)Z"),
@@ -1060,7 +1060,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.InvokeStatic("net/optifine/shaders/config/ShaderParser", "isFinal", "(Ljava/lang/String;)Z")),
                 inject(ByteCode.IOr()));
 
-        patch("允许final着色器配置glClearColor", method,
+        patch("Allow final shader to configure glClearColor", method,
                 ByteCode.Ldc("ClearColor"),
                 ByteCode.InvokeVirtual("net/optifine/shaders/config/ShaderLine", "isConstVec4Suffix", "(Ljava/lang/String;)Z"),
                 ByteCode.IfZero(null),
@@ -1072,7 +1072,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.InvokeStatic("net/optifine/shaders/config/ShaderParser", "isFinal", "(Ljava/lang/String;)Z")),
                 inject(ByteCode.IOr()));
 
-        patch("匹配colorimage/shadowcolorimage", method,
+        patch("Match colorimage/shadowcolorimage", method,
                 ByteCode.ALoad(9),
                 ByteCode.InvokeVirtual("net/optifine/shaders/config/ShaderLine", "isUniform", "()Z"),
                 ByteCode.IfZero(null),
@@ -1089,7 +1089,7 @@ public class ShadersPatcher extends Patcher {
     public void getEnumShaderOption(MethodNode method) {
         LabelNode label = ByteCode.Label();
 
-        patch("增加高版本特性选项配置读写", method,
+        patch("Add newer version feature option config read/write", method,
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "getEnumShaderOption", "(Lnet/optifine/shaders/config/EnumShaderOption;)Ljava/lang/String;")),
                 inject(ByteCode.Dup()),
@@ -1103,7 +1103,7 @@ public class ShadersPatcher extends Patcher {
     public void setEnumShaderOption(MethodNode method) {
         LabelNode label = ByteCode.Label();
 
-        patch("增加高版本特性选项配置读写", method,
+        patch("Add newer version feature option config read/write", method,
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.ALoad(1)),
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "setEnumShaderOption", "(Lnet/optifine/shaders/config/EnumShaderOption;Ljava/lang/String;)Z")),
@@ -1115,7 +1115,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("loadShaderPack()V")
     public void loadShaderPack(MethodNode method) {
-        patch("屏蔽光影加载时对各向异性过滤的判断", method,
+        patch("Suppress anisotropic filtering check during shader loading", method,
                 remove(ByteCode.InvokeStatic("Config", "isAnisotropicFiltering", "()Z")),
                 inject(ByteCode.IConst(0)),
                 ByteCode.IfZero(null));
@@ -1123,13 +1123,13 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("loadShaderPackProperties()V")
     public void loadShaderPackProperties(MethodNode method) {
-        // 显存泄漏
-        patch("重载自定义纹理", method,
+        // VRAM leak
+        patch("Reload custom textures", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 inject(ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "resetCustomTextures", "()V")));
 
-        patch("为部分属性屏蔽光影选项宏 第一部分", method,
+        patch("Suppress shader option macro for some properties part 1", method,
                 remove(ByteCode.ALoad(2)),
                 remove(ByteCode.GetStatic("net/optifine/shaders/Shaders", "shaderPackOptions", "[Lnet/optifine/shaders/config/ShaderOption;")),
                 remove(ByteCode.InvokeStatic("net/optifine/shaders/config/ShaderPackParser", "parseOptionSliders", "(Ljava/util/Properties;[Lnet/optifine/shaders/config/ShaderOption;)Ljava/util/Set;")),
@@ -1150,7 +1150,7 @@ public class ShadersPatcher extends Patcher {
 
         LabelNode label = ByteCode.Label();
 
-        patch("为部分属性屏蔽光影选项宏 第二部分", method,
+        patch("Suppress shader option macro for some properties part 2", method,
                 ByteCode.ALoad(2),
                 ByteCode.InvokeStatic("net/optifine/shaders/config/ShaderPackParser", "parseBuffersFlip", "(Ljava/util/Properties;)V"),
                 inject(ByteCode.New("net/optifine/util/PropertiesOrdered")),
@@ -1178,7 +1178,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.ALoad(2)),
                 inject(ByteCode.InvokeVirtual("net/optifine/shaders/config/PropertyDefaultTrueFalse", "loadFrom", "(Ljava/util/Properties;)Z")),
                 inject(ByteCode.Pop()),
-                // 只在loadShaderPackProperties时执行
+                // Only execute during loadShaderPackProperties
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "shaderPackOptionSliders", "Ljava/util/Set;")),
                 inject(ByteCode.IfNotNull(label)),
                 inject(ByteCode.ALoad(2)),
@@ -1203,7 +1203,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.InvokeStatic("net/optifine/shaders/config/MacroProcessor", "process", "(Ljava/io/InputStream;Ljava/lang/String;)Ljava/io/InputStream;")),
                 inject(ByteCode.Pop()));
 
-        patch("增加terrain/entities/blockentities阴影渲染配置 第一部分", method,
+        patch("Add terrain/entities/blockentities shadow rendering config part 1", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "shaderPackShadowTranslucent", "Lnet/optifine/shaders/config/PropertyDefaultTrueFalse;"),
                 ByteCode.InvokeVirtual("net/optifine/shaders/config/PropertyDefaultTrueFalse", "resetValue", "()V"),
                 inject(ByteCode.GetStatic(HOOK, "shaderPackShadowTerrain", "Lnet/optifine/shaders/config/PropertyDefaultTrueFalse;")),
@@ -1213,7 +1213,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.GetStatic(HOOK, "shaderPackShadowBlockEntities", "Lnet/optifine/shaders/config/PropertyDefaultTrueFalse;")),
                 inject(ByteCode.InvokeVirtual("net/optifine/shaders/config/PropertyDefaultTrueFalse", "resetValue", "()V")));
 
-        patch("增加terrain/entities/blockentities阴影渲染配置 第二部分", method,
+        patch("Add terrain/entities/blockentities shadow rendering config part 2", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "shaderPackShadowTranslucent", "Lnet/optifine/shaders/config/PropertyDefaultTrueFalse;"),
                 ByteCode.ALoad(2),
                 ByteCode.InvokeVirtual("net/optifine/shaders/config/PropertyDefaultTrueFalse", "loadFrom", "(Ljava/util/Properties;)Z"),
@@ -1231,18 +1231,18 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.InvokeVirtual("net/optifine/shaders/config/PropertyDefaultTrueFalse", "loadFrom", "(Ljava/util/Properties;)Z")),
                 inject(ByteCode.Pop()));
 
-        patch("增加size.buffer配置 第一部分", method,
+        patch("Add size.buffer configuration part 1", method,
                 ByteCode.AConstNull(),
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "customUniforms", "Lnet/optifine/shaders/uniform/CustomUniforms;"),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "resetBufferSizes", "()V")));
 
-        patch("增加size.buffer配置 第二部分", method,
+        patch("Add size.buffer configuration part 2", method,
                 ByteCode.ALoad(2),
                 ByteCode.InvokeStatic("net/optifine/shaders/config/ShaderPackParser", "parseBuffersFlip", "(Ljava/util/Properties;)V"),
                 inject(ByteCode.ALoad(2)),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "parseBufferSizes", "(Ljava/util/Properties;)V")));
 
-        patch("加载Prepare与ShadowComp自定义纹理", method,
+        patch("Load Prepare and ShadowComp custom textures", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "customTexturesDeferred", "[Lnet/optifine/shaders/ICustomTexture;"),
                 inject(ByteCode.ALoad(2)),
                 inject(ByteCode.IConst(3)),
@@ -1253,7 +1253,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "loadCustomTextures", "(Ljava/util/Properties;I)[Lnet/optifine/shaders/ICustomTexture;")),
                 inject(ByteCode.PutStatic(HOOK, "customTexturesShadowComp", "[Lnet/optifine/shaders/ICustomTexture;")));
 
-        patch("重置blend.<program>.<buffer>配置", method,
+        patch("Reset blend.<program>.<buffer> configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/EntityAliases", "reset", "()V"),
                 inject(ByteCode.GetStatic(BLEND, "propBlend", "Ljava/util/Map;")),
                 inject(ByteCode.InvokeInterface("java/util/Map", "clear", "()V")));
@@ -1261,7 +1261,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("init()V")
     public void init(MethodNode method) {
-        patch("修改光影选项后重载shader.properties", method,
+        patch("Reload shader.properties after modifying shader options", method,
                 ByteCode.Ldc("world"),
                 ByteCode.InvokeVirtual("java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;"),
                 ByteCode.ILoad(3),
@@ -1275,13 +1275,13 @@ public class ShadersPatcher extends Patcher {
                 ByteCode.Frame(),
                 inject(ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "loadShaderPackProperties", "()V")));
 
-        patch("配置着色器size.buffer", method,
+        patch("Configure shader size.buffer", method,
                 ByteCode.ALoad(4),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "updateToggleBuffers", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.ALoad(4)),
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "updateProgramSize", "(Lnet/optifine/shaders/Program;)V")));
 
-        patch("检查Deferred着色器是否存在计算着色器", method,
+        patch("Check if compute shader exists in Deferred shaders", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "ProgramsDeferred", "[Lnet/optifine/shaders/Program;"),
@@ -1294,14 +1294,14 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.InvokeStatic(COMPUTESHADER, "hasComputes", "(Lnet/optifine/shaders/Program;)Z")),
                 inject(ByteCode.IOr()));
 
-        patch("检查是否存在Prepare和ShadowComp着色器", method,
+        patch("Check if Prepare and ShadowComp shaders exist", method,
                 inject(ByteCode.InvokeStatic(MORESTAGES, "checkComposites", "()V")),
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "usedColorBuffers", "I"),
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "usedColorAttachs", "I"));
 
         LabelNode label = ByteCode.Label();
 
-        patch("修改阴影纹理渲染条件", method,
+        patch("Modify shadow texture rendering condition", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "usedColorBuffers", "I"),
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "usedColorAttachs", "I"),
                 ByteCode.Label(),
@@ -1314,7 +1314,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.PutStatic("net/optifine/shaders/Shaders", "usedShadowDepthBuffers", "I")),
                 inject(label));
 
-        patch("重置阴影纹理配置", method,
+        patch("Reset shadow texture configuration", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "gbuffersClearColor", "[Lorg/lwjgl/util/vector/Vector4f;"),
                 ByteCode.AConstNull(),
                 ByteCode.InvokeStatic("java/util/Arrays", "fill", "([Ljava/lang/Object;Ljava/lang/Object;)V"),
@@ -1328,13 +1328,13 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.AConstNull()),
                 inject(ByteCode.InvokeStatic("java/util/Arrays", "fill", "([Ljava/lang/Object;Ljava/lang/Object;)V")));
 
-        patch("重置colorimage绑定开关", method,
+        patch("Reset colorimage binding switch", method,
                 ByteCode.IConst(1),
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "usedDrawBuffers", "I"),
                 inject(ByteCode.IConst(0)),
                 inject(ByteCode.PutStatic(HOOK, "bindColorImages", "Z")));
 
-        patch("编译计算着色器", method,
+        patch("Compile compute shader", method,
                 inject(ByteCode.ALoad(4)),
                 inject(ByteCode.Ldc("/shaders/")),
                 inject(ByteCode.ALoad(6)),
@@ -1349,23 +1349,23 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("preDrawComposite()V")
     public void preDrawComposite(MethodNode method) {
-        patch("修改buffer大小", method,
+        patch("Modify buffer size", method,
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "preDrawComposite", "()V")),
                 method.instructions.getFirst());
 
-        // 这俩不会冲突的
-        patch("为ShadowComp修改视图大小", method,
+        // These two will not conflict
+        patch("Modify view size for ShadowComp", method,
                 inject(ByteCode.InvokeStatic(MORESTAGES, "preDrawComposite", "()V")),
                 method.instructions.getFirst());
     }
 
     @MethodPatch("postDrawComposite()V")
     public void postDrawComposite(MethodNode method) {
-        patch("恢复buffer大小", method,
+        patch("Restore buffer size", method,
                 inject(ByteCode.InvokeStatic(BUFFERSIZE, "postDrawComposite", "()V")),
                 method.instructions.getFirst());
 
-        patch("ShadowComp恢复视图大小", method,
+        patch("Restore view size for ShadowComp", method,
                 inject(ByteCode.InvokeStatic(MORESTAGES, "postDrawComposite", "()V")),
                 method.instructions.getFirst());
     }
@@ -1373,7 +1373,7 @@ public class ShadersPatcher extends Patcher {
     @MethodPatch("getFramebufferStatusText(I)Ljava/lang/String;")
     public void getFramebufferStatusText(MethodNode method) {
         LabelNode label = ByteCode.Label();
-        LookupSwitchInsnNode lookup = (LookupSwitchInsnNode) patch("增加size.buffer相关报错信息 第一部分", method,
+        LookupSwitchInsnNode lookup = (LookupSwitchInsnNode) patch("Add size.buffer related error message part 1", method,
                 collect(ByteCode.LookupSwitch()))[0];
 
         boolean matched = false;
@@ -1394,7 +1394,7 @@ public class ShadersPatcher extends Patcher {
             lookup.labels.add(label);
         }
 
-        patch("增加size.buffer相关报错信息 第二部分", method,
+        patch("Add size.buffer related error message part 2", method,
                 inject(label),
                 inject(ByteCode.Ldc("Incomplete dimensions")),
                 inject(ByteCode.AReturn()),
@@ -1407,7 +1407,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("setupProgram(Lnet/optifine/shaders/Program;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V")
     public void setupProgram(MethodNode method) {
-        patch("增加at_midBlock顶点属性 第一部分", method,
+        patch("Add at_midBlock vertex attribute part 1", method,
                 ByteCode.IConst(0),
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "progUseTangentAttrib", "Z"),
                 inject(ByteCode.IConst(0)),
@@ -1415,7 +1415,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.IConst(0)),
                 inject(ByteCode.PutStatic(HOOK, "progUseMidBlockAttrib", "Z")));
 
-        patch("增加at_midBlock顶点属性 第二部分", method,
+        patch("Add at_midBlock vertex attribute part 2", method,
                 inject(ByteCode.ILoad(4)),
                 inject(ByteCode.InvokeStatic(VERTEXATTRIBUTE, "bindAttributes", "(I)V")),
                 ByteCode.ILoad(4),
@@ -1424,7 +1424,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("createVertShader(Lnet/optifine/shaders/Program;Ljava/lang/String;)I")
     public void createVertShader(MethodNode method) {
-        patch("增加at_midBlock顶点属性", method,
+        patch("Add at_midBlock vertex attribute", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),
@@ -1433,7 +1433,7 @@ public class ShadersPatcher extends Patcher {
                 ByteCode.ALoad(9),
                 ByteCode.Ldc("countInstances"));
 
-        patch("Core Profile 版本转换", method,
+        patch("Core Profile version conversion", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.ALoad(4),
@@ -1454,7 +1454,7 @@ public class ShadersPatcher extends Patcher {
         LabelNode labelGbuffer = ByteCode.Label();
         LabelNode labelComp = ByteCode.Label();
 
-        patch("添加colortex8-15自定义纹理 第一部分", method,
+        patch("Add colortex8-15 custom textures part 1", method,
                 inject(ByteCode.ALoad(1)),
                 inject(ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "getBufferIndexFromString", "(Ljava/lang/String;)I")),
                 inject(ByteCode.IStore(2)),
@@ -1473,7 +1473,7 @@ public class ShadersPatcher extends Patcher {
                 ByteCode.Ldc("texture"),
                 ByteCode.InvokeVirtual("java/lang/String", "equals", "(Ljava/lang/Object;)Z"));
 
-        patch("添加colortex8-15自定义纹理 第二部分", method,
+        patch("Add colortex8-15 custom textures part 2", method,
                 inject(ByteCode.ALoad(1)),
                 inject(ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "getBufferIndexFromString", "(Ljava/lang/String;)I")),
                 inject(ByteCode.IStore(2)),
@@ -1495,7 +1495,7 @@ public class ShadersPatcher extends Patcher {
         JumpInsnNode equal2 = ByteCode.IfIntEqual(null);
         JumpInsnNode equal3 = ByteCode.IfIntEqual(null);
 
-        equal2.label = equal3.label = ((JumpInsnNode) patch("增加Prepare和ShadowComp纹理Stages", method,
+        equal2.label = equal3.label = ((JumpInsnNode) patch("Add Prepare and ShadowComp texture Stages", method,
                 ByteCode.ILoad(0),
                 ByteCode.IConst(1),
                 collect(ByteCode.IfIntEqual(null)),
@@ -1512,7 +1512,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("resetCustomTextures()V")
     public void resetCustomTextures(MethodNode method) {
-        patch("删除Prepare和ShadowComp自定义纹理", method,
+        patch("Delete Prepare and ShadowComp custom textures", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "customTexturesDeferred", "[Lnet/optifine/shaders/ICustomTexture;"),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "deleteCustomTextures", "([Lnet/optifine/shaders/ICustomTexture;)V"),
                 inject(ByteCode.GetStatic(HOOK, "customTexturesPrepare", "[Lnet/optifine/shaders/ICustomTexture;")),
@@ -1527,12 +1527,12 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("setupShadowFrameBuffer()V")
     public void setupShadowFrameBuffer(MethodNode method) {
-        patch("固定分配4个阴影颜色纹理", method,
+        patch("Allocate 4 shadow color textures fixedly", method,
                 remove(ByteCode.GetStatic("net/optifine/shaders/Shaders", "usedShadowColorBuffers", "I")),
                 inject(ByteCode.IConst(4)),
                 ByteCode.InvokeVirtual("java/nio/Buffer", "limit", "(I)Ljava/nio/Buffer;"));
 
-        patch("设置阴影ping-pong缓冲区与格式 第一部分", method,
+        patch("Set shadow ping-pong buffer and format part 1", method,
                 ByteCode.SIPush(GL11.GL_TEXTURE_2D),
                 ByteCode.IConst(0),
                 remove(ByteCode.SIPush(GL11.GL_RGBA)),
@@ -1552,7 +1552,7 @@ public class ShadersPatcher extends Patcher {
                 ByteCode.CheckCast("java/nio/ByteBuffer"),
                 ByteCode.InvokeStatic("org/lwjgl/opengl/GL11", "glTexImage2D", "(IIIIIIIILjava/nio/ByteBuffer;)V"));
 
-        patch("设置阴影ping-pong缓冲区与格式 第二部分", method,
+        patch("Set shadow ping-pong buffer and format part 2", method,
                 inject(ByteCode.InvokeStatic(MORESTAGES, "setupShadowFlipBuffer", "()V")),
                 ByteCode.IConst(0),
                 ByteCode.InvokeStatic("bus", "i", "(I)V"));
@@ -1560,7 +1560,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("updateAlphaBlend(Lnet/optifine/shaders/Program;Lnet/optifine/shaders/Program;)V")
     public void updateAlphaBlend(MethodNode method) {
-        patch("应用blend.<program>.<buffer>配置 第一部分", method,
+        patch("Apply blend.<program>.<buffer> configuration part 1", method,
                 ByteCode.InvokeStatic("bus", "unlockBlend", "()V"),
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
@@ -1568,7 +1568,7 @@ public class ShadersPatcher extends Patcher {
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.InvokeStatic(BLEND, "updateOldBlendStateIndexed", "(Lnet/optifine/shaders/Program;)V")));
 
-        patch("应用blend.<program>.<buffer>配置 第二部分", method,
+        patch("Apply blend.<program>.<buffer> configuration part 2", method,
                 inject(ByteCode.ALoad(1)),
                 inject(ByteCode.InvokeStatic(BLEND, "updateNewBlendStateIndexed", "(Lnet/optifine/shaders/Program;)V")),
                 ByteCode.Return());
@@ -1576,7 +1576,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("getPixelFormat(I)I")
     public void getPixelFormat(MethodNode method) {
-        LookupSwitchInsnNode lookup = (LookupSwitchInsnNode) patch("增加 8bits 与 16bits 整数型纹理格式", method,
+        LookupSwitchInsnNode lookup = (LookupSwitchInsnNode) patch("Add 8bits and 16bits integer texture formats", method,
                 collect(ByteCode.LookupSwitch()))[0];
 
         lookup.keys.add(GL30.GL_R8I);
@@ -1620,7 +1620,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("setCamera(F)V")
     public void setCamera(MethodNode method) {
-        patch("相机坐标修正", method,
+        patch("Camera coordinate fix", method,
                 inject(ByteCode.InvokeStatic(CAMERAFIX, "fixCamera", "()V")),
                 ByteCode.Ldc("setCamera"),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "checkGLError", "(Ljava/lang/String;)I"));
@@ -1628,7 +1628,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("setCameraShadow(F)V")
     public void setCameraShadow(MethodNode method) {
-        patch("移除阴影阶段Gbuffer矩阵Uniform写入", method,
+        patch("Remove Gbuffer matrix uniform writing in shadow stage", method,
                 remove(ByteCode.SIPush(GL11.GL_PROJECTION_MATRIX)),
                 remove(ByteCode.GetStatic("net/optifine/shaders/Shaders", "projection", "Ljava/nio/FloatBuffer;")),
                 remove(ByteCode.IConst(0)),
@@ -1700,7 +1700,7 @@ public class ShadersPatcher extends Patcher {
                 remove(ByteCode.InvokeVirtual("java/nio/FloatBuffer", "position", "(I)Ljava/nio/Buffer;")),
                 remove(ByteCode.Pop()));
 
-        patch("相机坐标修正", method,
+        patch("Camera coordinate fix", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "shadowModelViewInverse", "Ljava/nio/FloatBuffer;"),
                 ByteCode.IConst(0),
                 ByteCode.InvokeVirtual("java/nio/FloatBuffer", "position", "(I)Ljava/nio/Buffer;"),
@@ -1716,7 +1716,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("getCameraPosition()Let;")
     public void getCameraPosition(MethodNode method) {
-        patch("相机坐标修正", method,
+        patch("Camera coordinate fix", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "cameraPositionX", "D"),
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "cameraOffsetX", "I")),
                 inject(ByteCode.I2D()),
@@ -1730,7 +1730,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("setEntityId(Lvg;)V")
     public void setEntityId(MethodNode method) {
-        patch("高版本实体ID映射以及闪电实体ID", method,
+        patch("Newer version entity ID mapping and lightning entity ID", method,
                 ByteCode.ILoad(1),
                 ByteCode.InvokeStatic("net/optifine/shaders/EntityAliases", "getEntityAliasId", "(I)I"),
                 inject(ByteCode.ALoad(0)),
@@ -1744,7 +1744,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("beginSky()V")
     public void beginSky(MethodNode method) {
-        patch("增加SKY渲染阶段配置", method,
+        patch("Add SKY render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "SKY", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
@@ -1752,7 +1752,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("beginClouds()V")
     public void beginClouds(MethodNode method) {
-        patch("增加CLOUDS渲染阶段配置", method,
+        patch("Add CLOUDS render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "CLOUDS", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
@@ -1760,7 +1760,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("beginEntities()V")
     public void beginEntities(MethodNode method) {
-        patch("增加ENTITIES渲染阶段配置", method,
+        patch("Add ENTITIES render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "ENTITIES", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
@@ -1768,7 +1768,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("beginBlockEntities()V")
     public void beginBlockEntities(MethodNode method) {
-        patch("增加BLOCK_ENTITIES渲染阶段配置", method,
+        patch("Add BLOCK_ENTITIES render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "BLOCK_ENTITIES", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
@@ -1777,7 +1777,7 @@ public class ShadersPatcher extends Patcher {
     @MethodPatch("beginLitParticles()V")
     @MethodPatch("beginParticles()V")
     public void beginParticles(MethodNode method) {
-        patch("增加PARTICLES渲染阶段配置", method,
+        patch("Add PARTICLES render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "PARTICLES", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
@@ -1785,14 +1785,14 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("beginWeather()V")
     public void beginWeather(MethodNode method) {
-        patch("增加RAIN_SNOW渲染阶段配置", method,
+        patch("Add RAIN_SNOW render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "RAIN_SNOW", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
 
         JumpInsnNode skip = ByteCode.IfNotZero(null);
 
-        skip.label = ((JumpInsnNode) patch("开启高版本渲染机制后跳过复制深度纹理", method,
+        skip.label = ((JumpInsnNode) patch("Skip copying depth texture when newer version rendering mechanism is enabled", method,
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "isForwardVersion", "()Z")),
                 inject(skip),
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "usedDepthBuffers", "I"),
@@ -1806,7 +1806,7 @@ public class ShadersPatcher extends Patcher {
     @MethodPatch("endParticles()V")
     @MethodPatch("endWeather()V")
     public void resetRenderStage(MethodNode method) {
-        patch("重置渲染阶段配置", method,
+        patch("Reset render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "NONE", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
@@ -1814,13 +1814,13 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("beginHand(Z)V")
     public void beginHand(MethodNode method) {
-        patch("增加HAND_TRANSLUCENT渲染阶段配置", method,
+        patch("Add HAND_TRANSLUCENT render stage configuration", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "ProgramHandWater", "Lnet/optifine/shaders/Program;"),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "HAND_TRANSLUCENT", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
 
-        patch("增加HAND_SOLID渲染阶段配置", method,
+        patch("Add HAND_SOLID render stage configuration", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "ProgramHand", "Lnet/optifine/shaders/Program;"),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "HAND_SOLID", "Ladvancedshader/Hook$RenderStage;")),
@@ -1829,7 +1829,7 @@ public class ShadersPatcher extends Patcher {
 
     @MethodPatch("endHand()V")
     public void endHand(MethodNode method) {
-        patch("重置渲染阶段配置", method,
+        patch("Reset render stage configuration", method,
                 inject(ByteCode.GetStatic(RENDERSTAGE, "NONE", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")),
                 method.instructions.getFirst());

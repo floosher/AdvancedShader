@@ -10,7 +10,7 @@ public class ConnectedParserPatcher extends Patcher {
 
     @MethodPatch("parseMatchBlock(Ljava/lang/String;)[Lnet/optifine/config/MatchBlock;")
     public void parseMatchBlock(MethodNode method) {
-        patch("修复block.properties无法正确匹配方块问题", method,
+        patch("Fix block.properties failing to match blocks correctly", method,
                 remove(ByteCode.New("net/optifine/config/MatchBlock")),
                 inject(ByteCode.New(MATCHBLOCKSTATE)),
                 ByteCode.Dup(),
@@ -23,7 +23,7 @@ public class ConnectedParserPatcher extends Patcher {
 
     @MethodPatch("parseBlockMetadatas(Laow;[Ljava/lang/String;)[I")
     public void parseBlockMetadatas(MethodNode method) {
-        patch("修复block.properties无法正确匹配方块问题", method,
+        patch("Fix block.properties failing to match blocks correctly", method,
                 ByteCode.ALoad(7),
                 ByteCode.InvokeInterface("java/util/List", "size", "()I"),
                 remove(ByteCode.BIPush(16)),

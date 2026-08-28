@@ -10,7 +10,7 @@ public class GuiOverlayDebugPatcher extends Patcher {
 
     @MethodPatch("b()Ljava/util/List;")
     public void call(MethodNode method) {
-        patch("增加氛围值调试信息", method,
+        patch("Add mood debug info", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),

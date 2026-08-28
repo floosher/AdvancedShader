@@ -15,7 +15,7 @@ public class BufferBuilderPatcher extends Patcher {
     public void quadsToTriangles(MethodNode method) {
         JumpInsnNode jmp = ByteCode.IfIntEqual(null);
 
-        jmp.label = (LabelNode) patch("增加线段类型渲染判断", method,
+        jmp.label = (LabelNode) patch("Add line type rendering check", method,
                 ByteCode.ALoad(0),
                 ByteCode.GetField("buk", "j", "I"),
                 ByteCode.BIPush(GL11.GL_QUADS),
@@ -34,7 +34,7 @@ public class BufferBuilderPatcher extends Patcher {
     public void getDrawMode(MethodNode method) {
         JumpInsnNode jmp = ByteCode.IfIntNotEqual(null);
 
-        jmp.label = (LabelNode) patch("增加线段类型渲染判断", method,
+        jmp.label = (LabelNode) patch("Add line type rendering check", method,
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.GetField("buk", "j", "I")),
                 inject(ByteCode.BIPush(GL11.GL_QUADS)),
@@ -51,7 +51,7 @@ public class BufferBuilderPatcher extends Patcher {
 
     @MethodPatch("d()V")
     public void endVertex(MethodNode method) {
-        patch("线段增加额外顶点", method,
+        patch("Add extra vertices for lines", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/SVertexBuilder", "endAddVertex", "(Lbuk;)V"),
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.InvokeStatic(LINESHADER, "endAddVertex", "(Lbuk;)V")));
@@ -59,7 +59,7 @@ public class BufferBuilderPatcher extends Patcher {
 
     @MethodPatch("drawForIcon(Lcdq;I)I")
     public void drawForIcon(MethodNode method) {
-        patch("为MultiTexture绑定光影材质以及设定spriteBounds", method,
+        patch("Bind shader texture and set spriteBounds for MultiTexture", method,
                 remove(ByteCode.SIPush(3553)),
                 ByteCode.ALoad(1),
                 ByteCode.GetField("cdq", "glSpriteTextureId", "I"),
@@ -78,7 +78,7 @@ public class BufferBuilderPatcher extends Patcher {
         LabelNode ifend3 = ByteCode.Label();
         LabelNode quad3 = ByteCode.Label();
 
-        patch("增加drawMultiTexture三角形渲染判断", method,
+        patch("Add triangle rendering check for drawMultiTexture", method,
                 ByteCode.ILoad(1),
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.GetField("buk", "modeTriangles", "Z")),
@@ -121,7 +121,7 @@ public class BufferBuilderPatcher extends Patcher {
 
     @MethodPatch("a(DDD)V")
     public void putPosition(MethodNode method) {
-        patch("为方块设定at_midBlock顶点属性", method,
+        patch("Set at_midBlock vertex attribute for blocks", method,
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.InvokeStatic(VERTEXATTRIBUTE, "setMidBlock", "(Lbuk;)V")),
                 method.instructions.getFirst());

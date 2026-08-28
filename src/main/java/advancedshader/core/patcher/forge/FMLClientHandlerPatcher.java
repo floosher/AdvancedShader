@@ -10,7 +10,7 @@ import advancedshader.core.patcher.Patcher.Patch;
 public class FMLClientHandlerPatcher extends Patcher {
     @MethodPatch("getAdditionalBrandingInformation()Ljava/util/List;")
     public void getAdditionalBrandingInformation(MethodNode method) {
-        patch("主界面信息标识", method, new AbstractInsnNode[] {
+        patch("Main menu branding info", method, new AbstractInsnNode[] {
                 remove(ByteCode.IConst(1)),
                 inject(ByteCode.IConst(2)),
                 ByteCode.NewArray("java/lang/String"),
@@ -29,7 +29,7 @@ public class FMLClientHandlerPatcher extends Patcher {
                 ByteCode.AAStore(),
                 inject(ByteCode.Dup()),
                 inject(ByteCode.IConst(1)),
-                inject(ByteCode.Ldc("已启用光影前向兼容")),
+                inject(ByteCode.Ldc("Shader Forward Compatibility Enabled")),
                 inject(ByteCode.AAStore()),
                 ByteCode.InvokeStatic("java/util/Arrays", "asList", "([Ljava/lang/Object;)Ljava/util/List;") });
     }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AdvancedShader.iml" filepath="$PROJECT_DIR$/.idea/modules/AdvancedShader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AdvancedShader.main.iml" filepath="$PROJECT_DIR$/.idea/modules/AdvancedShader.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AdvancedShader.test.iml" filepath="$PROJECT_DIR$/.idea/modules/AdvancedShader.test.iml" />
+    </modules>
+  </component>
+</project>

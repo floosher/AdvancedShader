@@ -10,7 +10,7 @@ public class ShaderPackZipPatcher extends Patcher {
 
     @MethodPatch("getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;")
     public void getResourceAsStream(MethodNode method) {
-        patch("修复光影压缩包无法加载语言问题", method,
+        patch("Fix shader pack zip unable to load languages", method,
                 ByteCode.IfNotNull(null),
                 ByteCode.Label(),
                 ByteCode.LineNumber(),

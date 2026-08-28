@@ -13,7 +13,7 @@ public class EntityRendererPatcher extends Patcher {
 
     @MethodPatch("a(IFJ)V")
     public void renderWorldPass(MethodNode method) {
-        patch("增加Prepare着色器", method,
+        patch("Add Prepare shader", method,
                 ByteCode.FLoad(2),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "setCamera", "(F)V"),
                 inject(ByteCode.InvokeStatic(MORESTAGES, "renderPrepare", "()V")));
@@ -35,16 +35,16 @@ public class EntityRendererPatcher extends Patcher {
         Destroy
             +ifne outline
             +label particle
-        Lit Particle（不准Lit）
+        Lit Particle (not allowed to Lit)
         Particle
             +ifeq weather
             +render cloud
             +label weather
-        RainSnow <- depthtex2旧
+        RainSnow <- depthtex2 old
         WorldBorder
             +ifne cloudabove
             +label hand
-        Hand <- depthtex2新
+        Hand <- depthtex2 new
         Deferred Composite
         Translucent
             +render tripwire
@@ -75,7 +75,7 @@ public class EntityRendererPatcher extends Patcher {
          * inject(ByteCode.IfNotZero(terrain)),
          */
 
-        patch("高版本渲染机制 - 跳过原版云渲染 第一部分", method,
+        patch("Newer version rendering mechanism - Skip vanilla cloud rendering part 1", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),
@@ -90,7 +90,7 @@ public class EntityRendererPatcher extends Patcher {
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "isForwardVersion", "()Z")),
                 inject(ByteCode.IfNotZero(terrain)));
 
-        patch("高版本渲染机制 - 插入地形渲染跳转点", method,
+        patch("Newer version rendering mechanism - Insert terrain rendering jump point", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),
@@ -101,7 +101,7 @@ public class EntityRendererPatcher extends Patcher {
                 ByteCode.Ldc("prepareterrain"),
                 ByteCode.InvokeVirtual("rl", "c", "(Ljava/lang/String;)V"));
 
-        patch("高版本渲染机制 - 方块破坏效果渲染顺序提前 第一部分", method,
+        patch("Newer version rendering mechanism - Advance block breaking effect rendering order part 1", method,
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "isForwardVersion", "()Z")),
                 inject(ByteCode.IfNotZero(destroy)),
                 inject(outline),
@@ -118,7 +118,7 @@ public class EntityRendererPatcher extends Patcher {
                 ByteCode.InvokeVirtual("vg", "a", "(Lbcz;)Z"),
                 ByteCode.IfNotZero(null));
 
-        patch("高版本渲染机制 - 粒子渲染推迟 第一部分", method,
+        patch("Newer version rendering mechanism - Postpone particle rendering part 1", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),
@@ -130,7 +130,7 @@ public class EntityRendererPatcher extends Patcher {
                 ByteCode.InvokeInterface("java/util/Map", "isEmpty", "()Z"),
                 ByteCode.IfNotZero(null));
 
-        patch("高版本渲染机制 - 方块破坏效果渲染顺序提前 第二部分", method,
+        patch("Newer version rendering mechanism - Advance block breaking effect rendering order part 2", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),
@@ -146,7 +146,7 @@ public class EntityRendererPatcher extends Patcher {
                 ByteCode.LineNumber(),
                 ByteCode.InvokeStatic("bus", "l", "()V"));
 
-        patch("高版本渲染机制 - 粒子全部使用textured着色器中渲染", method,
+        patch("Newer version rendering mechanism - Render all particles in textured shader", method,
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "isForwardVersion", "()Z")),
                 inject(ByteCode.IfNotZero(beginNoLitParticles)),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "beginLitParticles", "()V"),
@@ -155,7 +155,7 @@ public class EntityRendererPatcher extends Patcher {
                 inject(ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "beginParticles", "()V")),
                 inject(checkParticleEnd));
 
-        patch("高版本渲染机制 - 雨雪粒子前渲染云", method,
+        patch("Newer version rendering mechanism - Render clouds before rain/snow particles", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),
@@ -180,7 +180,7 @@ public class EntityRendererPatcher extends Patcher {
                 ByteCode.LineNumber(),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "isRainDepth", "()Z"));
 
-        patch("高版本渲染机制 - 粒子渲染推迟 第二部分", method,
+        patch("Newer version rendering mechanism - Postpone particle rendering part 2", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.ALoad(6),
@@ -191,7 +191,7 @@ public class EntityRendererPatcher extends Patcher {
                 inject(ByteCode.IfNotZero(cloudabove)),
                 inject(hand));
 
-        patch("高版本渲染机制 - 渲染TRIPWIRE地形", method,
+        patch("Newer version rendering mechanism - Render TRIPWIRE terrain", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "endWater", "()V"),
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
@@ -208,7 +208,7 @@ public class EntityRendererPatcher extends Patcher {
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "endTripwire", "()V")),
                 ByteCode.GetStatic("net/optifine/reflect/Reflector", "ForgeHooksClient_setRenderPass", "Lnet/optifine/reflect/ReflectorMethod;"));
 
-        patch("高版本渲染机制 - 粒子渲染推迟 第三部分", method,
+        patch("Newer version rendering mechanism - Postpone particle rendering part 3", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),
@@ -241,14 +241,14 @@ public class EntityRendererPatcher extends Patcher {
                 ByteCode.F2D(),
                 ByteCode.DAdd());
 
-        patch("高版本渲染机制 - 跳过原版云渲染 第二部分", method,
+        patch("Newer version rendering mechanism - Skip vanilla cloud rendering part 2", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),
                 inject(handwater),
                 ByteCode.GetStatic("net/optifine/reflect/Reflector", "ForgeHooksClient_dispatchRenderLast", "Lnet/optifine/reflect/ReflectorMethod;"));
 
-        patch("增加TERRAIN_TRANSLUCENT渲染阶段配置", method,
+        patch("Add TERRAIN_TRANSLUCENT render stage configuration", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),
@@ -265,7 +265,7 @@ public class EntityRendererPatcher extends Patcher {
                 inject(ByteCode.GetStatic(RENDERSTAGE, "NONE", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
 
-        patch("增加OUTLINE渲染阶段配置", method,
+        patch("Add OUTLINE render stage configuration", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),
@@ -282,7 +282,7 @@ public class EntityRendererPatcher extends Patcher {
                 inject(ByteCode.GetStatic(RENDERSTAGE, "NONE", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
 
-        patch("增加DEBUG渲染阶段配置", method,
+        patch("Add DEBUG render stage configuration", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "DEBUG", "Ladvancedshader/Hook$RenderStage;")),
@@ -296,7 +296,7 @@ public class EntityRendererPatcher extends Patcher {
                 inject(ByteCode.GetStatic(RENDERSTAGE, "NONE", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
 
-        patch("高版本渲染机制 复制depthtex2", method,
+        patch("Newer version rendering mechanism copy depthtex2", method,
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "prepareHand", "()V")),
                 ByteCode.ALoad(0),
                 ByteCode.FLoad(2),

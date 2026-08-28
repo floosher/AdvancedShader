@@ -13,7 +13,7 @@ public class VboRenderListPatcher extends Patcher {
     public void preRenderRegion(MethodNode method) {
         LabelNode label = ByteCode.Label();
 
-        patch("添加chunkOffset Uniform变量", method,
+        patch("Add chunkOffset uniform variable", method,
                 inject(ByteCode.Label()),
                 inject(ByteCode.ILoad(1)),
                 inject(ByteCode.I2D()),

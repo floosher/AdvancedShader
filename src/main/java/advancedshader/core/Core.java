@@ -53,7 +53,7 @@ public class Core implements ITweaker {
                 Matcher matcher = pattern.matcher(entry.getName());
 
                 if (matcher.find()) {
-                    System.out.println("加载修补程序：" + matcher.group(1).replace('/', '.'));
+                    System.out.println("Loading patcher: " + matcher.group(1).replace('/', '.'));
                     classLoader.registerTransformer(matcher.group(1).replace('/', '.'));
                 }
             }

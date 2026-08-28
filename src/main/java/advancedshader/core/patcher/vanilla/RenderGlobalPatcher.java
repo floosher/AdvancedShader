@@ -12,7 +12,7 @@ public class RenderGlobalPatcher extends Patcher {
     @MethodPatch("a(Lvg;Lbxy;F)V")
     public void renderEntities(MethodNode method) {
         LabelNode entitiesStart = ByteCode.Label();
-        LabelNode entitiesEnd = (LabelNode) patch("添加shadowEntities配置 第一部分", method,
+        LabelNode entitiesEnd = (LabelNode) patch("Add shadowEntities configuration part 1", method,
                 collect(ByteCode.Label()),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),
@@ -22,7 +22,7 @@ public class RenderGlobalPatcher extends Patcher {
                 ByteCode.LineNumber(),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "endEntities", "()V"))[0];
 
-        patch("添加shadowEntities配置 第二部分", method,
+        patch("Add shadowEntities configuration part 2", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "beginEntities", "()V"),
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
@@ -36,12 +36,12 @@ public class RenderGlobalPatcher extends Patcher {
                 inject(ByteCode.IfNotZero(entitiesEnd)),
                 inject(entitiesStart));
 
-        LabelNode blockEntitiesStart = (LabelNode) patch("添加shadowBlockEntities配置 第一部分", method,
+        LabelNode blockEntitiesStart = (LabelNode) patch("Add shadowBlockEntities configuration part 1", method,
                 ByteCode.Ldc("blockentities"),
                 ByteCode.InvokeVirtual("rl", "c", "(Ljava/lang/String;)V"),
                 collect(ByteCode.Label()))[0];
 
-        LabelNode blockEntitiesEnd = (LabelNode) patch("添加shadowBlockEntities配置 第二部分", method,
+        LabelNode blockEntitiesEnd = (LabelNode) patch("Add shadowBlockEntities configuration part 2", method,
                 collect(ByteCode.Label()),
                 ByteCode.LineNumber(),
                 ByteCode.ILoad(21),
@@ -50,7 +50,7 @@ public class RenderGlobalPatcher extends Patcher {
                 ByteCode.LineNumber(),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "endBlockEntities", "()V"))[0];
 
-        patch("添加shadowBlockEntities配置 第三部分", method,
+        patch("Add shadowBlockEntities configuration part 3", method,
                 ByteCode.Ldc("blockentities"),
                 ByteCode.InvokeVirtual("rl", "c", "(Ljava/lang/String;)V"),
                 inject(ByteCode.ILoad(21)),
@@ -63,14 +63,14 @@ public class RenderGlobalPatcher extends Patcher {
 
         LabelNode lightningSkip = ByteCode.Label();
 
-        patch("高版本机制 - 使用实体着色器渲染闪电 第一部分", method,
+        patch("Newer version mechanism - Render lightning with entity shader part 1", method,
                 ByteCode.GetStatic("net/optifine/reflect/Reflector", "ForgeTileEntity_shouldRenderInPass", "Lnet/optifine/reflect/ReflectorMethod;"),
                 ByteCode.InvokeVirtual("net/optifine/reflect/ReflectorMethod", "exists", "()Z"),
                 ByteCode.IStore(20),
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "beginLightningShader", "()Z")),
                 inject(ByteCode.IfNotZero(lightningSkip)));
 
-        patch("高版本机制 - 使用实体着色器渲染闪电 第二部分", method,
+        patch("Newer version mechanism - Render lightning with entity shader part 2", method,
                 ByteCode.ALoad(22),
                 ByteCode.DLoad(5),
                 ByteCode.DLoad(7),
@@ -88,7 +88,7 @@ public class RenderGlobalPatcher extends Patcher {
                 ByteCode.IConst(0),
                 ByteCode.InvokeVirtual("bzf", "a", "(Lvg;FZ)V"));
 
-        patch("高版本机制 - 使用实体着色器渲染闪电 第三部分", method,
+        patch("Newer version mechanism - Render lightning with entity shader part 3", method,
                 inject(lightningSkip),
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "endLightningShader", "()V")),
                 ByteCode.Label(),
@@ -103,7 +103,7 @@ public class RenderGlobalPatcher extends Patcher {
 
     @MethodPatch("a(FI)V")
     public void renderSky(MethodNode method) {
-        patch("增加SUNSET渲染阶段配置", method,
+        patch("Add SUNSET render stage configuration", method,
                 ByteCode.IfNull(null),
                 ByteCode.InvokeStatic("Config", "isSunMoonEnabled", "()Z"),
                 ByteCode.IfZero(null),
@@ -120,19 +120,19 @@ public class RenderGlobalPatcher extends Patcher {
                 inject(ByteCode.GetStatic(RENDERSTAGE, "SUNSET", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
 
-        patch("增加SUN渲染阶段配置", method,
+        patch("Add SUN render stage configuration", method,
                 ByteCode.InvokeStatic("Config", "isSunTexture", "()Z"),
                 ByteCode.IfZero(null),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "SUN", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
 
-        patch("增加MOON渲染阶段配置", method,
+        patch("Add MOON render stage configuration", method,
                 ByteCode.InvokeStatic("Config", "isMoonTexture", "()Z"),
                 ByteCode.IfZero(null),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "MOON", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
 
-        patch("增加STARS渲染阶段配置", method,
+        patch("Add STARS render stage configuration", method,
                 ByteCode.InvokeStatic("Config", "isStarsEnabled", "()Z"),
                 ByteCode.IfZero(null),
                 ByteCode.ALoad(0),
@@ -142,7 +142,7 @@ public class RenderGlobalPatcher extends Patcher {
                 inject(ByteCode.GetStatic(RENDERSTAGE, "STARS", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
 
-        patch("增加VOID渲染阶段配置", method,
+        patch("Add VOID render stage configuration", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.ALoad(0),
@@ -168,12 +168,12 @@ public class RenderGlobalPatcher extends Patcher {
 
     @MethodPatch("a(Lvg;F)V")
     public void renderWorldBorder(MethodNode method) {
-        patch("增加WORLD_BORDER渲染阶段配置", method,
+        patch("Add WORLD_BORDER render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "WORLD_BORDER", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
 
-        patch("重置渲染阶段配置", method,
+        patch("Reset render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "popProgram", "()V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "NONE", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
@@ -181,7 +181,7 @@ public class RenderGlobalPatcher extends Patcher {
     
     @MethodPatch("a(Lbuk;DDDDDDFFFF)V")
     public void drawBoundingBox(MethodNode method) {
-        patch("描边框半透明修复1", method,
+        patch("Outline semi-transparency fix 1", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.ALoad(0),
@@ -195,7 +195,7 @@ public class RenderGlobalPatcher extends Patcher {
                 remove(ByteCode.FConst(0)),
                 inject(ByteCode.FLoad(16)));
 
-        patch("描边框半透明修复2", method,
+        patch("Outline semi-transparency fix 2", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.ALoad(0),
@@ -209,7 +209,7 @@ public class RenderGlobalPatcher extends Patcher {
                 remove(ByteCode.FConst(0)),
                 inject(ByteCode.FLoad(16)));
 
-        patch("描边框半透明修复3", method,
+        patch("Outline semi-transparency fix 3", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.ALoad(0),
@@ -223,7 +223,7 @@ public class RenderGlobalPatcher extends Patcher {
                 remove(ByteCode.FConst(0)),
                 inject(ByteCode.FLoad(16)));
 
-        patch("描边框防止拉丝", method,
+        patch("Prevent outline streaking", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 inject(ByteCode.ALoad(0)),

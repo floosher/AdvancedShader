@@ -10,7 +10,7 @@ public class ShaderExpressionResolverPatcher extends Patcher {
 
     @MethodPatch("registerExpressions()V")
     public void registerExpressions(MethodNode method) {
-        patch("自定义Uniform变量增加额外属性", method,
+        patch("Add extra properties to custom uniforms", method,
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.InvokeStatic(CUSTOMUNIFORM, "registerExpressions", "(Lnet/optifine/shaders/uniform/ShaderExpressionResolver;)V")),
                 ByteCode.Return());

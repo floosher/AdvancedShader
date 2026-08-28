@@ -10,7 +10,7 @@ public class MinecraftForgeClientPatcher extends Patcher {
 
     @MethodPatch("getRenderLayer()Lamm;")
     public void getRenderLayer(MethodNode method) {
-        patch("TRIPWIRE兼容其他模组", method,
+        patch("TRIPWIRE compatibility with other mods", method,
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "getRenderLayer", "(Lamm;)Lamm;")),
                 ByteCode.AReturn());
     }

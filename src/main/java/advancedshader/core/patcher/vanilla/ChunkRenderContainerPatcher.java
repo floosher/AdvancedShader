@@ -13,7 +13,7 @@ public class ChunkRenderContainerPatcher extends Patcher {
     public void preRenderChunk(MethodNode method) {
         LabelNode label = ByteCode.Label();
 
-        patch("添加chunkOffset Uniform变量", method,
+        patch("Add chunkOffset uniform variable", method,
                 inject(ByteCode.Label()),
                 inject(ByteCode.ALoad(1)),
                 inject(ByteCode.InvokeVirtual("bxr", "k", "()Let;")),

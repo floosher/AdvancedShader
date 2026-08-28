@@ -11,7 +11,7 @@ public class TextureMapPatcher extends Patcher {
 
     @MethodPatch("b(Lcep;)V")
     public void loadTextureAtlas(MethodNode method) {
-        patch("加载适用于各向异性过滤的法线与高光精灵图", method,
+        patch("Load normal and specular sprites for anisotropic filtering", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.ALoad(21),
@@ -23,7 +23,7 @@ public class TextureMapPatcher extends Patcher {
                 inject(ByteCode.InvokeStatic(ANISOTROPICFILTER, "loadShaderSprite", "(Lcdq;)V")),
                 ByteCode.Goto(null));
 
-        patch("删除适用于各向异性过滤的法线与高光精灵图", method,
+        patch("Delete normal and specular sprites for anisotropic filtering", method,
                 ByteCode.ALoad(3),
                 ByteCode.InvokeVirtual("cdq", "deleteSpriteTexture", "()V"),
                 inject(ByteCode.ALoad(3)),
@@ -35,7 +35,7 @@ public class TextureMapPatcher extends Patcher {
         LabelNode normalEnd = ByteCode.Label();
         LabelNode specularEnd = ByteCode.Label();
 
-        patch("更新适用于各向异性过滤的法线与高光精灵图动画", method,
+        patch("Update normal and specular sprite animations for anisotropic filtering", method,
                 ByteCode.ALoad(6),
                 ByteCode.InvokeVirtual("cdq", "isAnimationActive", "()Z"),
                 ByteCode.IfZero(null),

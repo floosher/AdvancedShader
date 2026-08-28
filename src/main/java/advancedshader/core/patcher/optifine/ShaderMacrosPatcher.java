@@ -10,7 +10,7 @@ public class ShaderMacrosPatcher extends Patcher {
 
     @MethodPatch("getFixedMacroLines()Ljava/lang/String;")
     public void getFixedMacroLines(MethodNode method) {
-        patch("增加额外预定义宏", method,
+        patch("Add extra predefined macros", method,
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.InvokeStatic(HOOK, "addMacroLines", "(Ljava/lang/StringBuilder;)V")),
                 ByteCode.ALoad(0),
@@ -19,7 +19,7 @@ public class ShaderMacrosPatcher extends Patcher {
 
     @MethodPatch("getExtensions()[Lnet/optifine/shaders/config/ShaderMacro;")
     public void getExtensions(MethodNode method) {
-        patch("增加RenderStage宏", method,
+        patch("Add RenderStage macro", method,
                 ByteCode.ALoad(1),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "addRenderStageMacros", "([Lnet/optifine/shaders/config/ShaderMacro;)[Lnet/optifine/shaders/config/ShaderMacro;")),
                 ByteCode.PutStatic("net/optifine/shaders/config/ShaderMacros", "extensionMacros", "[Lnet/optifine/shaders/config/ShaderMacro;"));

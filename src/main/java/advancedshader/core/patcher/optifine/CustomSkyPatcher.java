@@ -10,7 +10,7 @@ public class CustomSkyPatcher extends Patcher {
 
     @MethodPatch("renderSky(Lamu;Lcdr;F)V")
     public void renderSky(MethodNode method) {
-        patch("增加CUSTOM_SKY渲染阶段配置", method,
+        patch("Add CUSTOM_SKY render stage configuration", method,
                 ByteCode.Return(),
                 ByteCode.Label(),
                 ByteCode.LineNumber(),

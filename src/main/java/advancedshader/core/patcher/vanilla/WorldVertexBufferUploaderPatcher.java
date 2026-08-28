@@ -15,7 +15,7 @@ public class WorldVertexBufferUploaderPatcher extends Patcher {
     public void draw(MethodNode method) {
         LabelNode succ = ByteCode.Label();
 
-        patch("增加线段类型渲染判断", method,
+        patch("Add line type rendering check", method,
                 ByteCode.ALoad(1),
                 ByteCode.InvokeVirtual("buk", "i", "()I"),
                 ByteCode.BIPush(GL11.GL_QUADS),
@@ -29,7 +29,7 @@ public class WorldVertexBufferUploaderPatcher extends Patcher {
 
         JumpInsnNode jmp = ByteCode.IfNotZero(null);
 
-        jmp.label = ((JumpInsnNode) patch("drawMultiTexture增加光影判断", method,
+        jmp.label = ((JumpInsnNode) patch("Add shader check to drawMultiTexture", method,
                 inject(ByteCode.InvokeStatic("Config", "isShaders", "()Z")),
                 inject(jmp),
                 ByteCode.ALoad(8),

@@ -111,9 +111,9 @@ public abstract class Patcher implements IClassTransformer {
     public final byte[] transform(String name, String transformedName, byte[] basicClass) {
         if (name.equals(this.target) || transformedName.equals(this.target)) {
             if (name.equals(transformedName)) {
-                LOGGER.info("正在加载类 {}，执行修补程序", name);
+                LOGGER.info("Loading class {}, applying patcher", name);
             } else {
-                LOGGER.info("正在加载类 {} ({})，执行修补程序", name, transformedName);
+                LOGGER.info("Loading class {} ({}), applying patcher", name, transformedName);
             }
 
             ClassReader cr = new ClassReader(basicClass);
@@ -122,7 +122,7 @@ public abstract class Patcher implements IClassTransformer {
 
             try {
                 if (this.classPatch != null) {
-                    LOGGER.debug(" - 执行类结构修补");
+                    LOGGER.debug(" - Applying class structure patch");
                     this.classPatch.invoke(this, node);
                 }
 
@@ -132,9 +132,9 @@ public abstract class Patcher implements IClassTransformer {
 
                     if (methodPatch != null) {
                         if (name.equals(transformedName)) {
-                            LOGGER.debug(" - 执行字节码修补，目标方法：{}", key);
+                            LOGGER.debug(" - Applying bytecode patch, target method: {}", key);
                         } else {
-                            LOGGER.debug(" - 执行字节码修补，目标方法：{} ({})", key, methodPatch.getName());
+                            LOGGER.debug(" - Applying bytecode patch, target method: {} ({})", key, methodPatch.getName());
                         }
                         methodPatch.invoke(this, method);
                         this.methodPatched.put(key, Boolean.TRUE);
@@ -143,7 +143,7 @@ public abstract class Patcher implements IClassTransformer {
 
                 for (String key : this.methodPatched.keySet()) {
                     if (!this.methodPatched.get(key)) {
-                        LOGGER.warn(" - 未执行目标为 {} 的方法修补程式", key);
+                        LOGGER.warn(" - Method patch targeting {} was not executed", key);
                     }
                 }
 
@@ -153,7 +153,7 @@ public abstract class Patcher implements IClassTransformer {
                 node.accept(cw);
                 basicClass = cw.toByteArray();
             } catch (Throwable e) {
-                RuntimeException ex = new RuntimeException("发生严重故障，模组无法正常运作，请检查模组冲突情况。", e);
+                RuntimeException ex = new RuntimeException("A critical error occurred and the mod cannot function properly. Please check for mod conflicts.", e);
 
                 LOGGER.catching(ex);
                 throw ex;
@@ -174,7 +174,7 @@ public abstract class Patcher implements IClassTransformer {
     }
 
     public final AbstractInsnNode[] patch(String task, MethodNode method, AbstractInsnNode... matchAndPatch) {
-        LOGGER.debug("    - 执行修补作业：{}", task);
+        LOGGER.debug("    - Applying patch task: {}", task);
 
         AbstractInsnNode node = method.instructions.getFirst();
         ArrayList<AbstractInsnNode> list = new ArrayList<>();
@@ -188,8 +188,8 @@ public abstract class Patcher implements IClassTransformer {
         }
 
         if (node == null) {
-            // 生产环境运行到这里只能说明有冲突模组，那没啥办法，崩了呗
-            throw new RuntimeException("修补失败，无法匹配目标字节码。");
+            // Reaching here in production environment indicates conflicting mods; nothing we can do, crash it
+            throw new RuntimeException("Patch failed: unable to match target bytecode.");
         }
 
         for (int i = 0; i < matchAndPatch.length; i++) {
@@ -241,7 +241,7 @@ public abstract class Patcher implements IClassTransformer {
     }
 
     private final boolean checkIfMatch(AbstractInsnNode node, AbstractInsnNode[] target) {
-        boolean matched = false; // target总不能全是inject吧
+        boolean matched = false; // target can't be all injects
 
         for (int i = 0; i < target.length; i++) {
             AbstractInsnNode match = target[i];
@@ -458,7 +458,7 @@ public abstract class Patcher implements IClassTransformer {
 
         public static IntInsnNode BIPush(int i) {
             if (i < -128 || i > 127 || i <= 5 && i >= -1) {
-                弱智八哥报错器.让我想想怎么骂这个开发者();
+                BugReporter.roastDeveloper();
             }
 
             return new IntInsnNode(BIPUSH, i);
@@ -466,7 +466,7 @@ public abstract class Patcher implements IClassTransformer {
 
         public static IntInsnNode SIPush(int i) {
             if (i < -32768 || i > 32767 || i <= 5 && i >= -1) {
-                弱智八哥报错器.让我想想怎么骂这个开发者();
+                BugReporter.roastDeveloper();
             }
 
             return new IntInsnNode(SIPUSH, i);
@@ -502,7 +502,7 @@ public abstract class Patcher implements IClassTransformer {
                 return new InsnNode(ICONST_M1);
             }
 
-            弱智八哥报错器.让我想想怎么骂这个开发者();
+            BugReporter.roastDeveloper();
             return null;
         }
 
@@ -516,7 +516,7 @@ public abstract class Patcher implements IClassTransformer {
                 return new InsnNode(FCONST_2);
             }
 
-            弱智八哥报错器.让我想想怎么骂这个开发者();
+            BugReporter.roastDeveloper();
             return null;
         }
 
@@ -528,7 +528,7 @@ public abstract class Patcher implements IClassTransformer {
                 return new InsnNode(DCONST_1);
             }
 
-            弱智八哥报错器.让我想想怎么骂这个开发者();
+            BugReporter.roastDeveloper();
             return null;
         }
 
@@ -766,31 +766,31 @@ public abstract class Patcher implements IClassTransformer {
             this.mode = mode;
 
             if (this.node instanceof ModifyingNode || this.mode < MODE_INJECT && this.mode > MODE_MATCH_ALL) {
-                弱智八哥报错器.让我想想怎么骂这个开发者();
+                BugReporter.roastDeveloper();
             }
         }
     }
 
-    private static final class 弱智八哥报错器 {
-        private static final String[] 哈哈哈哈哈哈哈 = new String[] {
-                "结论：大脑进水综合征",
-                "脑子瓦特了= =",
-                "脑子进水了是吧？？？",
-                "我有病，你有药吗",
-                "建议放弃治疗",
-                "这已经不是**的问题了呀（哭）",
-                "看，这是你写的八阿哥，啪，游戏没了",
-                "喜闻乐见锣鼓喧天鞭炮齐鸣红旗招展",
+    private static final class BugReporter {
+        private static final String[] ROAST_MESSAGES = new String[] {
+                "Conclusion: Water on the brain syndrome",
+                "Brain short-circuited = =",
+                "Got water in your head, huh???",
+                "I am sick, do you have medicine?",
+                "Recommended to give up treatment",
+                "This is no longer just an issue of being ** (crying)",
+                "Look, this is the bug you wrote; snap, the game is gone",
+                "Great joy with drums beating, firecrackers blasting, and red flags waving",
                 "Standing here I realize you were just like me trying to make HISTORY",
-                "你是想笑死我然后继承我的欠款吗",
+                "Are you trying to make me die of laughter so you can inherit my debts?",
                 "I am the storm that is APPROOOOOOOOOOOOOOOOOOOOOOACHING!",
                 "Nanobug, son.",
-                "我重伤倒地，但我还活着",
-                "不愧是你"
+                "I'm heavily injured on the ground, but I'm still alive",
+                "As expected of you"
         };
 
-        public static void 让我想想怎么骂这个开发者() {
-            throw new Error(哈哈哈哈哈哈哈[new Random().nextInt(哈哈哈哈哈哈哈.length)]);
+        public static void roastDeveloper() {
+            throw new Error(ROAST_MESSAGES[new Random().nextInt(ROAST_MESSAGES.length)]);
         }
     }
 }

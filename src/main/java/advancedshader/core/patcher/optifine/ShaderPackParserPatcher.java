@@ -10,11 +10,11 @@ public class ShaderPackParserPatcher extends Patcher {
 
     @MethodPatch("resolveIncludes(Ljava/io/BufferedReader;Ljava/lang/String;Lnet/optifine/shaders/IShaderPack;ILjava/util/List;I)Ljava/io/BufferedReader;")
     public void resolveIncludes(MethodNode method) {
-        patch("替换着色器版本宏", method,
+        patch("Replace shader version macro", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/config/ShaderMacros", "getFixedMacroLines", "()Ljava/lang/String;"),
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "replaceShaderVersionMacro", "(Ljava/lang/String;)Ljava/lang/String;")));
 
-//        patch("Core Profile 版本转换", method,
+//        patch("Core Profile version conversion", method,
 //                ByteCode.Label(),
 //                ByteCode.LineNumber(),
 //                inject(ByteCode.ALoad(12)),
@@ -27,7 +27,7 @@ public class ShaderPackParserPatcher extends Patcher {
 
 //        LabelNode label = ByteCode.Label();
 //
-//        patch("Core Profile 兼容性转换", method,
+//        patch("Core Profile compatibility conversion", method,
 //                inject(ByteCode.ILoad(9)),
 //                inject(ByteCode.IfLessThanZero(label)),
 //                inject(ByteCode.ALoad(12)),
@@ -48,7 +48,7 @@ public class ShaderPackParserPatcher extends Patcher {
 
     @MethodPatch("parseBlendStates(Ljava/util/Properties;)V")
     public void parseBlendStates(MethodNode method) {
-        patch("增加blend.<program>.<buffer>配置", method,
+        patch("Add blend.<program>.<buffer> configuration", method,
                 ByteCode.ALoad(3),
                 ByteCode.Ldc("."),
                 ByteCode.InvokeStatic("Config", "tokenize", "(Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/String;"),
@@ -62,7 +62,7 @@ public class ShaderPackParserPatcher extends Patcher {
 
     @MethodPatch("collectShaderOptions(Lnet/optifine/shaders/IShaderPack;Ljava/lang/String;[Ljava/lang/String;Ljava/util/Map;)V")
     public void collectShaderOptions(MethodNode method) {
-        patch("解析几何着色器与计算着色器中的配置", method,
+        patch("Parse configurations in geometry and compute shaders", method,
                 ByteCode.New("java/lang/StringBuilder"),
                 ByteCode.Dup(),
                 ByteCode.InvokeSpecial("java/lang/StringBuilder", "<init>", "()V"),

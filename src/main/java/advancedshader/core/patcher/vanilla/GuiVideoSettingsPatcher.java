@@ -10,7 +10,7 @@ public class GuiVideoSettingsPatcher extends Patcher {
 
     @MethodPatch("actionPerformed(Lbja;I)V")
     public void actionPerformed(MethodNode method) {
-        patch("屏蔽光影选项对各向异性过滤的判断", method,
+        patch("Suppress shader option check for anisotropic filtering", method,
                 remove(ByteCode.InvokeStatic("Config", "isAnisotropicFiltering", "()Z")),
                 inject(ByteCode.IConst(0)),
                 ByteCode.IfZero(null));

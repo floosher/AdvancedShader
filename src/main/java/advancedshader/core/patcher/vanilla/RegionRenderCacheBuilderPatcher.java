@@ -10,7 +10,7 @@ public class RegionRenderCacheBuilderPatcher extends Patcher {
 
     @MethodPatch("<init>()V")
     public void init(MethodNode method) {
-        patch("为Tripwire渲染类型添加渲染器", method,
+        patch("Add renderer for Tripwire render layer", method,
                 ByteCode.AAStore(),
                 inject(ByteCode.ALoad(0)),
                 inject(ByteCode.GetField("bum", "a", "[Lbuk;")),

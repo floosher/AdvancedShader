@@ -22,7 +22,7 @@ public class ItemLayerModelPatcher extends Patcher {
         LabelNode label9 = ByteCode.Label();
         LabelNode label10 = ByteCode.Label();
 
-        patch("修复物品侧面UV", method,
+        patch("Fix item side UV", method,
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),

@@ -11,7 +11,7 @@ public class GameSettingsPatcher extends Patcher {
 
     @MethodPatch("setOptionFloatValueOF(Lbid$a;F)V")
     public void setOptionFloatValueOF(MethodNode method) {
-        patch("屏蔽各向异性过滤选项对光影的判断", method,
+        patch("Suppress anisotropic filtering option check for shaders", method,
                 ByteCode.ILoad(3),
                 remove(ByteCode.IConst(1)),
                 inject(ByteCode.BIPush(16)),
@@ -24,7 +24,7 @@ public class GameSettingsPatcher extends Patcher {
 
         LabelNode label = ByteCode.Label();
 
-        patch("修改各向异性过滤后重载光影", method,
+        patch("Reload shaders after modifying anisotropic filtering", method,
                 ByteCode.PutField("bid", "ofAfLevel", "I"),
                 ByteCode.Label(),
                 ByteCode.LineNumber(),

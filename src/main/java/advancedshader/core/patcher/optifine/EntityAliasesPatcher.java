@@ -10,7 +10,7 @@ public class EntityAliasesPatcher extends Patcher {
 
     @MethodPatch("loadEntityAliases(Ljava/io/InputStream;Ljava/lang/String;Ljava/util/List;)V")
     public void loadEntityAliases(MethodNode method) {
-        patch("高版本实体ID重映射", method,
+        patch("Newer version entity ID remapping", method,
                 ByteCode.ALoad(4),
                 ByteCode.ALoad(8),
                 inject(ByteCode.ILoad(11)),
@@ -20,7 +20,7 @@ public class EntityAliasesPatcher extends Patcher {
 
     @MethodPatch("reset()V")
     public void reset(MethodNode method) {
-        patch("重置闪电实体ID", method,
+        patch("Reset lightning entity ID", method,
                 inject(ByteCode.IConst(-1)),
                 inject(ByteCode.PutStatic(FORWARDFEATURES, "lightningID", "I")),
                 method.instructions.getFirst());

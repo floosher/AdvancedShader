@@ -14,7 +14,7 @@ public class PropertiesOrderedPatcher extends Patcher {
         LabelNode label1 = ByteCode.Label();
         LabelNode label2 = ByteCode.Label();
 
-        patch("配置文件修正", method,
+        patch("Fix properties file", method,
                 inject(ByteCode.ALoad(1)),
                 inject(ByteCode.InstanceOf("java/lang/String")),
                 inject(ByteCode.IfZero(label1)),

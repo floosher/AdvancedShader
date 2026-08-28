@@ -10,7 +10,7 @@ public class MacroProcessorPatcher extends Patcher {
 
     @MethodPatch("getMacroHeader(Ljava/lang/String;)Ljava/lang/String;")
     public void getMacroHeader(MethodNode method) {
-        patch("增加光影选项宏", method,
+        patch("Add shader option macro", method,
                 ByteCode.ALoad(1),
                 ByteCode.InvokeStatic("net/optifine/shaders/config/ShaderMacros", "getFixedMacroLines", "()Ljava/lang/String;"),
                 ByteCode.InvokeVirtual("java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;"),
@@ -25,12 +25,12 @@ public class MacroProcessorPatcher extends Patcher {
 
     @MethodPatch("process(Ljava/io/InputStream;Ljava/lang/String;)Ljava/io/InputStream;")
     public void process(MethodNode method) {
-        patch("光影选项宏复位", method,
+        patch("Reset shader option macro", method,
                 inject(ByteCode.AConstNull()),
                 inject(ByteCode.PutStatic(PROPERTYFIX, "shaderOptions", "Ljava/util/List;")),
                 method.instructions.getFirst());
 
-        patch("高版本方块ID选项修改版本宏", method,
+        patch("Newer version block ID option modify version macro", method,
                 ByteCode.ALoad(2),
                 ByteCode.InvokeStatic("net/optifine/shaders/config/MacroProcessor", "getMacroHeader", "(Ljava/lang/String;)Ljava/lang/String;"),
                 inject(ByteCode.ALoad(1)),

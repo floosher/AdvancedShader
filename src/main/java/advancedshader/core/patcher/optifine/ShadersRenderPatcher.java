@@ -13,7 +13,7 @@ public class ShadersRenderPatcher extends Patcher {
 
     @MethodPatch("renderShadowMap(Lbuq;IFJ)V")
     public void renderShadowMap(MethodNode method) {
-        LabelNode label = (LabelNode) patch("添加shadowTerrain配置 第一部分", method,
+        LabelNode label = (LabelNode) patch("Add shadowTerrain config part 1", method,
                 ByteCode.Ldc("shadow terrain cutout"),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "checkGLError", "(Ljava/lang/String;)I"),
                 ByteCode.Pop(),
@@ -26,7 +26,7 @@ public class ShadersRenderPatcher extends Patcher {
                 ByteCode.InvokeInterface("cds", "a", "()V"),
                 collect(ByteCode.Label()))[0];
 
-        patch("添加shadowTerrain配置 第二部分", method,
+        patch("Add shadowTerrain config part 2", method,
                 inject(ByteCode.GetStatic(HOOK, "shaderPackShadowTerrain", "Lnet/optifine/shaders/config/PropertyDefaultTrueFalse;")),
                 inject(ByteCode.InvokeVirtual("net/optifine/shaders/config/PropertyDefaultTrueFalse", "isFalse", "()Z")),
                 inject(ByteCode.IfNotZero(label)),
@@ -42,24 +42,24 @@ public class ShadersRenderPatcher extends Patcher {
                 ByteCode.InvokeVirtual("buy", "a", "(Lamm;DILvg;)I"),
                 ByteCode.Pop());
 
-        patch("配置阴影纹理glClear", method,
+        patch("Configure shadow texture glClear", method,
                 remove(ByteCode.InvokeStatic("org/lwjgl/opengl/GL11", "glClear", "(I)V")),
                 inject(ByteCode.Pop()),
                 inject(ByteCode.InvokeStatic(MORESTAGES, "clearShadowMap", "()V")));
 
-        patch("添加ShadowComp着色器", method,
+        patch("Add ShadowComp shader", method,
                 ByteCode.Ldc("shadow postprocess"),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "checkGLError", "(Ljava/lang/String;)I"),
                 ByteCode.Pop(),
                 inject(ByteCode.InvokeStatic(MORESTAGES, "renderShadowComp", "()V")));
 
-        patch("执行计算着色器", method,
+        patch("Execute compute shader", method,
                 inject(ByteCode.GetStatic("net/optifine/shaders/Shaders", "ProgramShadow", "Lnet/optifine/shaders/Program;")),
                 inject(ByteCode.InvokeStatic(COMPUTESHADER, "dispatchComputes", "(Lnet/optifine/shaders/Program;)V")),
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "ProgramShadow", "Lnet/optifine/shaders/Program;"),
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"));
 
-        patch("相机坐标修正", method,
+        patch("Camera coordinate fix", method,
                 ByteCode.PutStatic("net/optifine/shaders/Shaders", "preShadowPassThirdPersonView", "I"),
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
@@ -71,7 +71,7 @@ public class ShadersRenderPatcher extends Patcher {
 
     @MethodPatch("preRenderChunkLayer(Lamm;)V")
     public void preRenderChunkLayer(MethodNode method) {
-        patch("绑定at_midBlock顶点属性", method,
+        patch("Bind at_midBlock vertex attribute", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "entityAttrib", "I"),
                 ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glEnableVertexAttribArray", "(I)V"),
                 inject(ByteCode.GetStatic(HOOK, "midBlockAttrib", "I")),
@@ -80,7 +80,7 @@ public class ShadersRenderPatcher extends Patcher {
 
     @MethodPatch("postRenderChunkLayer(Lamm;)V")
     public void postRenderChunkLayer(MethodNode method) {
-        patch("解绑at_midBlock顶点属性", method,
+        patch("Unbind at_midBlock vertex attribute", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "entityAttrib", "I"),
                 ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glDisableVertexAttribArray", "(I)V"),
                 inject(ByteCode.GetStatic(HOOK, "midBlockAttrib", "I")),
@@ -89,7 +89,7 @@ public class ShadersRenderPatcher extends Patcher {
 
     @MethodPatch("setupArrayPointersVbo()V")
     public void setupArrayPointersVbo(MethodNode method) {
-        patch("配置at_midBlock顶点属性", method,
+        patch("Configure at_midBlock vertex attribute", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "entityAttrib", "I"),
                 ByteCode.IConst(3),
                 ByteCode.SIPush(GL11.GL_SHORT),
@@ -108,7 +108,7 @@ public class ShadersRenderPatcher extends Patcher {
 
     @MethodPatch("beginTerrainSolid()V")
     public void beginTerrainSolid(MethodNode method) {
-        patch("增加TERRAIN_SOLID渲染阶段配置", method,
+        patch("Add TERRAIN_SOLID render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "TERRAIN_SOLID", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
@@ -116,7 +116,7 @@ public class ShadersRenderPatcher extends Patcher {
 
     @MethodPatch("beginTerrainCutoutMipped()V")
     public void beginTerrainCutoutMipped(MethodNode method) {
-        patch("增加TERRAIN_CUTOUT_MIPPED渲染阶段配置", method,
+        patch("Add TERRAIN_CUTOUT_MIPPED render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "TERRAIN_CUTOUT_MIPPED", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
@@ -124,7 +124,7 @@ public class ShadersRenderPatcher extends Patcher {
 
     @MethodPatch("beginTerrainCutout()V")
     public void beginTerrainCutout(MethodNode method) {
-        patch("增加TERRAIN_CUTOUT渲染阶段配置", method,
+        patch("Add TERRAIN_CUTOUT render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "TERRAIN_CUTOUT", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
@@ -132,7 +132,7 @@ public class ShadersRenderPatcher extends Patcher {
 
     @MethodPatch("beginBlockDamage()V")
     public void beginBlockDamage(MethodNode method) {
-        patch("增加DESTROY渲染阶段配置", method,
+        patch("Add DESTROY render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "DESTROY", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));
@@ -141,7 +141,7 @@ public class ShadersRenderPatcher extends Patcher {
     @MethodPatch("endTerrain()V")
     @MethodPatch("endBlockDamage()V")
     public void resetRenderStage(MethodNode method) {
-        patch("重置渲染阶段配置", method,
+        patch("Reset render stage configuration", method,
                 ByteCode.InvokeStatic("net/optifine/shaders/Shaders", "useProgram", "(Lnet/optifine/shaders/Program;)V"),
                 inject(ByteCode.GetStatic(RENDERSTAGE, "NONE", "Ladvancedshader/Hook$RenderStage;")),
                 inject(ByteCode.InvokeStatic(RENDERSTAGE, "setRenderStage", "(Ladvancedshader/Hook$RenderStage;)V")));

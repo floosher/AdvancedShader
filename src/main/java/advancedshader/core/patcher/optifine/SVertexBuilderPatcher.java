@@ -15,7 +15,7 @@ public class SVertexBuilderPatcher extends Patcher {
         LabelNode singleTexture = ByteCode.Label();
         LabelNode drawEnd = ByteCode.Label();
 
-        patch("增加调用drawMultiTexture判断", method,
+        patch("Add check for calling drawMultiTexture", method,
                 inject(ByteCode.ALoad(3)),
                 inject(ByteCode.InvokeVirtual("buk", "isMultiTexture", "()Z")),
                 inject(ByteCode.IfZero(singleTexture)),
@@ -29,8 +29,8 @@ public class SVertexBuilderPatcher extends Patcher {
                 ByteCode.InvokeStatic("bus", "f", "(III)V"),
                 inject(drawEnd));
 
-        // 第一部分也许是不必要的，但万一呢……？
-        patch("增加gbuffers_line着色器 第一部分", method,
+        // Part 1 might be unnecessary, but just in case...?
+        patch("Add gbuffers_line shader part 1", method,
                 inject(ByteCode.ILoad(0)),
                 inject(ByteCode.ALoad(3)),
                 inject(ByteCode.InvokeStatic(LINESHADER, "preDrawArray", "(ILbuk;)I")),
@@ -41,7 +41,7 @@ public class SVertexBuilderPatcher extends Patcher {
                 ByteCode.InvokeStatic("bus", "f", "(III)V"),
                 inject(ByteCode.InvokeStatic(LINESHADER, "postDrawArray", "()V")));
 
-        patch("增加gbuffers_line着色器 第二部分", method,
+        patch("Add gbuffers_line shader part 2", method,
                 inject(ByteCode.ILoad(0)),
                 inject(ByteCode.ALoad(3)),
                 inject(ByteCode.InvokeStatic(LINESHADER, "preDrawArray", "(ILbuk;)I")),
@@ -56,7 +56,7 @@ public class SVertexBuilderPatcher extends Patcher {
                 ByteCode.Frame(),
                 ByteCode.Return());
 
-        patch("增加at_midBlock顶点属性 第一部分", method,
+        patch("Add at_midBlock vertex attribute part 1", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "entityAttrib", "I"),
                 ByteCode.IConst(3),
                 ByteCode.SIPush(GL11.GL_SHORT),
@@ -75,13 +75,13 @@ public class SVertexBuilderPatcher extends Patcher {
                 inject(ByteCode.CheckCast("java/nio/ByteBuffer")),
                 inject(ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glVertexAttribPointer", "(IIIZILjava/nio/ByteBuffer;)V")));
 
-        patch("增加at_midBlock顶点属性 第二部分", method,
+        patch("Add at_midBlock vertex attribute part 2", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "entityAttrib", "I"),
                 ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glEnableVertexAttribArray", "(I)V"),
                 inject(ByteCode.GetStatic(HOOK, "midBlockAttrib", "I")),
                 inject(ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glEnableVertexAttribArray", "(I)V")));
 
-        patch("增加at_midBlock顶点属性 第三部分", method,
+        patch("Add at_midBlock vertex attribute part 3", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "entityAttrib", "I"),
                 ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glDisableVertexAttribArray", "(I)V"),
                 inject(ByteCode.GetStatic(HOOK, "midBlockAttrib", "I")),
@@ -90,7 +90,7 @@ public class SVertexBuilderPatcher extends Patcher {
 
     @MethodPatch("pushEntity(Lawt;Let;Lamy;Lbuk;)V")
     public void pushEntity(MethodNode method) {
-        patch("修复block.properties无法正确匹配方块问题", method,
+        patch("Fix block.properties failing to match blocks correctly", method,
                 remove(ByteCode.ILoad(4)),
                 remove(ByteCode.ILoad(5)),
                 remove(ByteCode.InvokeStatic("net/optifine/shaders/BlockAliases", "getBlockAliasId", "(II)I")),

@@ -10,7 +10,7 @@ public class ChunkRenderDispatcherPatcher extends Patcher {
 
     @MethodPatch("a(Lamm;Lbuk;Lbxr;Lbxo;D)Lcom/google/common/util/concurrent/ListenableFuture;")
     public void uploadChunk(MethodNode method) {
-        patch("设定spriteBounds值", method,
+        patch("Set spriteBounds value", method,
                 inject(ByteCode.ALoad(1)),
                 inject(ByteCode.InvokeStatic(ANISOTROPICFILTER, "preUploadDisplayList", "(Lamm;)V")),
                 ByteCode.ALoad(0),

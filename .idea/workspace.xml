@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b0e3d5c6-be6c-4848-a842-b749d8ed11d0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/AdvancedShader.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/AdvancedShader.main.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/AdvancedShader.test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/Hook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/Hook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/Core.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/Core.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/Patcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/Patcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/forge/FMLClientHandlerPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/forge/FMLClientHandlerPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/forge/ItemLayerModelPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/forge/ItemLayerModelPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/forge/MinecraftForgeClientPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/forge/MinecraftForgeClientPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/BlockAliasesPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/BlockAliasesPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ConnectedParserPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ConnectedParserPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/CustomSkyPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/CustomSkyPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/EntityAliasesPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/EntityAliasesPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/EnumShaderOptionPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/EnumShaderOptionPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/GuiButtonEnumShaderOptionPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/GuiButtonEnumShaderOptionPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/GuiShadersPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/GuiShadersPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/GuiSlotShadersPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/GuiSlotShadersPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ItemAliasesPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ItemAliasesPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/MacroProcessorPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/MacroProcessorPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/MacroStatePatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/MacroStatePatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ProgramPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ProgramPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/PropertiesOrderedPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/PropertiesOrderedPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/SVertexBuilderPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/SVertexBuilderPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShaderExpressionResolverPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShaderExpressionResolverPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShaderMacrosPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShaderMacrosPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShaderPackParserPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShaderPackParserPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShaderPackZipPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShaderPackZipPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShaderParserPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShaderParserPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShadersPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShadersPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShadersRenderPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/optifine/ShadersRenderPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/BlockRenderLayerPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/BlockRenderLayerPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/BufferBuilderPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/BufferBuilderPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/ChunkRenderContainerPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/ChunkRenderContainerPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/ChunkRenderDispatcherPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/ChunkRenderDispatcherPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/EntityRendererPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/EntityRendererPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/GameSettingsPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/GameSettingsPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/GuiOverlayDebugPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/GuiOverlayDebugPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/GuiVideoSettingsPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/GuiVideoSettingsPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/RegionRenderCacheBuilderPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/RegionRenderCacheBuilderPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/RenderChunkPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/RenderChunkPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/RenderGlobalPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/RenderGlobalPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/RenderListPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/RenderListPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/TextureMapPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/TextureMapPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/VboRenderListPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/VboRenderListPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/WorldClientPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/WorldClientPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/WorldVertexBufferUploaderPatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/advancedshader/core/patcher/vanilla/WorldVertexBufferUploaderPatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mcmod.info" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mcmod.info" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="64" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AdvancedShader" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AdvancedShader" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AdvancedShader" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "flashifloosh"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/flashifloosh/AdvancedShader.git",
+    "accountId": "94cca1ff-0d41-49a2-832a-6e44a60a3244"
+  }
+}]]></component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="2.538769100163608E-7" />
+      <entry key="MS500" value="0.07455556551679716" />
+      <entry key="S2" value="1.241519209393107" />
+      <entry key="S5" value="2.7821570782187326" />
+      <entry key="S10" value="4.116408596253836" />
+      <entry key="S30" value="6.175169738463004" />
+      <entry key="S60" value="7.3432996029082425" />
+      <entry key="M2" value="8.32259269191104" />
+      <entry key="M5" value="9.201136741147593" />
+      <entry key="M10" value="9.573635618603694" />
+      <entry key="M15" value="9.709255683603402" />
+      <entry key="M30" value="9.851236325809737" />
+      <entry key="H1" value="9.92474268922311" />
+      <entry key="H2" value="9.962148918336407" />
+      <entry key="H4" value="9.981018400895962" />
+      <entry key="D1" value="9.996828575610408" />
+      <entry key="W1" value="9.9995467472451" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0" />
+      <entry key="S60" value="1.0" />
+      <entry key="M2" value="1.0" />
+      <entry key="M5" value="1.0" />
+      <entry key="M10" value="1.0" />
+      <entry key="M15" value="1.0" />
+      <entry key="M30" value="1.0" />
+      <entry key="H1" value="1.0" />
+      <entry key="H2" value="1.0" />
+      <entry key="H4" value="1.0" />
+      <entry key="D1" value="1.0" />
+      <entry key="W1" value="1.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.007188968247423514" />
+      <entry key="MS500" value="0.4086219175894198" />
+      <entry key="S2" value="1.842667652901438" />
+      <entry key="S5" value="3.4997355023223116" />
+      <entry key="S10" value="4.8985620987965675" />
+      <entry key="S30" value="7.0478512652122545" />
+      <entry key="S60" value="8.261744590404346" />
+      <entry key="M2" value="9.273723475352469" />
+      <entry key="M5" value="10.17851573970461" />
+      <entry key="M10" value="10.561653505097286" />
+      <entry key="M15" value="10.701102882155572" />
+      <entry key="M30" value="10.847073243310746" />
+      <entry key="H1" value="10.922638621264703" />
+      <entry key="H2" value="10.961091141373018" />
+      <entry key="H4" value="10.980488062478521" />
+      <entry key="D1" value="10.996739983276756" />
+      <entry key="W1" value="10.9995340862199" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5,
+  "fromUser": false
+}]]></component>
+  <component name="ProjectId" id="3IYyek9XhsZLzlTol00newtGq1S" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Gradle.AdvancedShader [cleanMod].executor": "Run",
+    "Gradle.AdvancedShader [clean].executor": "Run",
+    "Gradle.AdvancedShader [createMcpToSrg].executor": "Run",
+    "Gradle.AdvancedShader [jar].executor": "Run",
+    "Gradle.D:/Development/workspace/AdvancedShader [createMcpToSrg].executor": "Run",
+    "Gradle.Upgrade Gradle wrapper.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "junie.plugin.stays.banner.dismissed": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.20996094",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "configurable.group.appearance",
+    "to.speed.mode.migration.done": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="Gradle.AdvancedShader [jar]">
+    <configuration name="AdvancedShader [cleanMod]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="cleanMod" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="AdvancedShader [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="AdvancedShader [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="jar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.AdvancedShader [jar]" />
+        <item itemvalue="Gradle.AdvancedShader [clean]" />
+        <item itemvalue="Gradle.AdvancedShader [cleanMod]" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-34e2839f716b-intellij.indexing.shared.core-IU-262.9437.185" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.9437.185" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b0e3d5c6-be6c-4848-a842-b749d8ed11d0" name="Changes" comment="" />
+      <created>1787955893611</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1787955893611</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

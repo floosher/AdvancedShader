@@ -11,7 +11,7 @@ public class GuiShadersPatcher extends Patcher {
 
     @MethodPatch("b()V")
     public void initGui(MethodNode method) {
-        patch("增加模拟高版本特性相关选项", method,
+        patch("Add options for simulating newer version features", method,
                 ByteCode.ALoad(0),
                 ByteCode.GetField("net/optifine/shaders/gui/GuiShaders", "n", "Ljava/util/List;"),
                 ByteCode.New("net/optifine/shaders/gui/GuiButtonEnumShaderOption"),
@@ -80,7 +80,7 @@ public class GuiShadersPatcher extends Patcher {
                 inject(ByteCode.InvokeInterface("java/util/List", "add", "(Ljava/lang/Object;)Z")),
                 inject(ByteCode.Pop()));
 
-        patch("调整侧边位置", method,
+        patch("Adjust sidebar position", method,
                 ByteCode.ALoad(0),
                 ByteCode.GetField("net/optifine/shaders/gui/GuiShaders", "shaderList", "Lnet/optifine/shaders/gui/GuiSlotShaders;"),
                 ByteCode.BIPush(7),
@@ -94,7 +94,7 @@ public class GuiShadersPatcher extends Patcher {
     public void actionPerformed(MethodNode method) {
         LabelNode label = ByteCode.Label();
 
-        patch("增加高版本特性按钮点击事件", method,
+        patch("Add newer version feature button click event", method,
                 inject(ByteCode.ALoad(1)),
                 inject(ByteCode.ILoad(2)),
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "actionPerformed", "(Lbja;Z)Z")),
@@ -103,7 +103,7 @@ public class GuiShadersPatcher extends Patcher {
                 inject(label),
                 method.instructions.getFirst());
 
-        patch("修复打开光影文件夹报错", method,
+        patch("Fix error when opening shaderpacks folder", method,
                 remove(ByteCode.Ldc("cmd.exe /C start \"Open file\" \"%s\"")),
                 remove(ByteCode.IConst(1)),
                 remove(ByteCode.NewArray("java/lang/Object")),

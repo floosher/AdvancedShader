@@ -10,19 +10,19 @@ public class EnumShaderOptionPatcher extends Patcher {
 
     @MethodPatch("<clinit>()V")
     public void clinit(MethodNode method) {
-        patch("增加高版本特性选项枚举 第一部分", method,
+        patch("Add newer version feature option enum part 1", method,
                 remove(ByteCode.BIPush(18)),
                 inject(ByteCode.BIPush(21)),
                 ByteCode.NewArray("net/optifine/shaders/config/EnumShaderOption"));
 
-        patch("增加高版本特性选项枚举 第二部分", method,
+        patch("Add newer version feature option enum part 2", method,
                 inject(ByteCode.Dup()),
                 inject(ByteCode.BIPush(18)),
                 inject(ByteCode.New("net/optifine/shaders/config/EnumShaderOption")),
                 inject(ByteCode.Dup()),
                 inject(ByteCode.Ldc("RENDERER")),
                 inject(ByteCode.SIPush(18)),
-                inject(ByteCode.Ldc("渲染机制")),
+                inject(ByteCode.Ldc("Renderer")),
                 inject(ByteCode.Ldc("renderer")),
                 inject(ByteCode.Ldc("1.12.2")),
                 inject(ByteCode.InvokeSpecial("net/optifine/shaders/config/EnumShaderOption", "<init>", "(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V")),
@@ -33,7 +33,7 @@ public class EnumShaderOptionPatcher extends Patcher {
                 inject(ByteCode.Dup()),
                 inject(ByteCode.Ldc("BLOCK_ID")),
                 inject(ByteCode.SIPush(19)),
-                inject(ByteCode.Ldc("方块ID")),
+                inject(ByteCode.Ldc("Block ID")),
                 inject(ByteCode.Ldc("blockID")),
                 inject(ByteCode.Ldc("1.12.2")),
                 inject(ByteCode.InvokeSpecial("net/optifine/shaders/config/EnumShaderOption", "<init>", "(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V")),
@@ -44,7 +44,7 @@ public class EnumShaderOptionPatcher extends Patcher {
                 inject(ByteCode.Dup()),
                 inject(ByteCode.Ldc("PLAYERMOOD")),
                 inject(ByteCode.SIPush(201)),
-                inject(ByteCode.Ldc("氛围值机制")),
+                inject(ByteCode.Ldc("Player Mood")),
                 inject(ByteCode.Ldc("playerMood")),
                 inject(ByteCode.Ldc("1.12.2")),
                 inject(ByteCode.InvokeSpecial("net/optifine/shaders/config/EnumShaderOption", "<init>", "(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V")),

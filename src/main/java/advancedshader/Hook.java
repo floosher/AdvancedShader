@@ -132,7 +132,7 @@ public class Hook extends DummyModContainer {
 
 // ====== Shaders Hook ======
 
-    // 总有一天我要让这里座无虚席
+    // One day I will make this place fully packed
     public static int[] colorTextureImageUnit = null;
     public static int[] shadowTextureImageUnit = new int[] { 13, 14 };
 
@@ -284,7 +284,7 @@ public class Hook extends DummyModContainer {
             break;
         }
 
-        setProgramUniform3f(uniformChunkOffset, 0F, 0F, 0F); // 其实到这里已经可以结束了，但我想搞事！
+        setProgramUniform3f(uniformChunkOffset, 0F, 0F, 0F); // Actually it could end here, but I want to cause trouble!
         setProgramUniform1f(uniformPlayerMood, ForwardFeatures.mood);
         setProgramUniform1i(uniformRenderStage, renderStage.ordinal());
 
@@ -664,7 +664,7 @@ public class Hook extends DummyModContainer {
         return field;
     }
 
-// ====== 更多Buffers ======
+// ====== More Buffers ======
 
     public static class MoreBuffers {
 
@@ -760,7 +760,7 @@ public class Hook extends DummyModContainer {
 
     }
 
-// ====== 高版本特性选项 ======
+// ====== Newer Version Feature Options ======
 
     public static class ForwardFeatures {
 
@@ -774,7 +774,7 @@ public class Hook extends DummyModContainer {
             try {
                 map = new Gson().fromJson(new InputStreamReader(new GZIPInputStream(Hook.class.getResourceAsStream("/idmap.gz"))), TypeToken.getParameterized(Map.class, String.class, BlockMapper.class).getType());
             } catch (Throwable e) {
-                LOGGER.error("我那么大一个idmap.gz方块ID映射表呢？？？");
+                LOGGER.error("Where is my huge idmap.gz block ID mapping table???");
             }
 
             idMap = map;
@@ -820,9 +820,9 @@ public class Hook extends DummyModContainer {
                     if (key.equals("renderer")) {
                         forwardVersion = !forwardVersion;
 
-                        LOGGER.info("切换渲染机制：{}", forwardVersion ? "1.16.5" : "1.12.2");
+                        LOGGER.info("Switched rendering mechanism: {}", forwardVersion ? "1.16.5" : "1.12.2");
 
-                        // 谢谢你IterationT
+                        // Thank you IterationT
                         if (forwardVersion) {
                             Shaders.entityAttrib = 11;
                             Shaders.midTexCoordAttrib = 12;
@@ -846,7 +846,7 @@ public class Hook extends DummyModContainer {
                             idMapping = false;
                         }
 
-                        LOGGER.info("切换方块ID版本：{}", idMapping ? "1.16.5" : "1.12.2");
+                        LOGGER.info("Switched block ID version: {}", idMapping ? "1.16.5" : "1.12.2");
 
                         BlockAliases.reset();
                         BlockAliases.update(Shaders.getShaderPack());
@@ -858,7 +858,7 @@ public class Hook extends DummyModContainer {
                     } else if (key.equals("playerMood")) {
                         playerMood = !playerMood;
 
-                        LOGGER.info("切换氛围值机制：{}", playerMood ? "1.16.5" : "1.12.2");
+                        LOGGER.info("Switched player mood mechanism: {}", playerMood ? "1.16.5" : "1.12.2");
                     } else {
                         return false;
                     }
@@ -923,7 +923,7 @@ public class Hook extends DummyModContainer {
             return false;
         }
 
-        // === 渲染机制 ===
+        // === Rendering Mechanism ===
 
         // EntityRenderer.renderWorldPass
         public static boolean isForwardVersion() {
@@ -1042,7 +1042,7 @@ public class Hook extends DummyModContainer {
             }
         }
 
-        // === 方块ID ===
+        // === Block ID ===
 
         // MacroProcessor.process
         public static String replaceBlockVersionMacro(String macros, String path) {
@@ -1167,7 +1167,7 @@ public class Hook extends DummyModContainer {
             return idMapping ? -1 : id;
         }
 
-        // 返回true时顺便skip了
+        // Skip when returning true
         // RenderGlobal.renderEntities
         public static boolean beginLightningShader() {
             if (Shaders.shaderPackLoaded && (forwardVersion || lightningID != -1)) {
@@ -1269,7 +1269,7 @@ public class Hook extends DummyModContainer {
             }
         }
 
-        // === 氛围值 ===
+        // === Player Mood ===
 
         // GuiOverlayDebug.call
         public static void addPlayerMoodDebug(List<String> list) {
@@ -1319,7 +1319,7 @@ public class Hook extends DummyModContainer {
         }
     }
 
-// ====== Core Profile 兼容 ======
+// ====== Core Profile Compatibility ======
 
     public static class CoreProfile {
 
@@ -1341,7 +1341,7 @@ public class Hook extends DummyModContainer {
                 new ShaderMacro("vaUV2", "(gl_MultiTexCoord1.xy)")
         };
 
-        // 如果有人定义了整型顶点属性我大概会生气
+        // If someone defines an integer vertex attribute I'll probably get angry
         private static final ShaderMacro POS_VEC4 = new ShaderMacro("vaPosition", "gl_Vertex");
         private static final ShaderMacro POS_VEC2 = new ShaderMacro("vaPosition", "(gl_Vertex.xy)");
         private static final ShaderMacro POS_FLOAT = new ShaderMacro("vaPosition", "(gl_Vertex.x)");
@@ -1367,7 +1367,7 @@ public class Hook extends DummyModContainer {
 //                case "120":
 //                case "130":
 //                case "140":
-//                    // 我挺想知道ComplementaryShaders在#version 120里用gl_VertexID是怎么想的
+//                    // I really wonder what ComplementaryShaders was thinking using gl_VertexID in #version 120
 //                    version = "#version 150 compatibility";
 //                    break;
 //                default:
@@ -1384,8 +1384,8 @@ public class Hook extends DummyModContainer {
 //                return text;
 //            }
 //
-//            // 我也挺想知道ComplementaryShaders为啥用vaPosition、modelViewMatrix不事先声明的，得，都是被OF惯的
-//            // 可以放上面addMacroLines方法里，也可以在下面判断是否调用vaPosition变量什么的，懒得优化了，就放这里吧
+//            // I also wonder why ComplementaryShaders uses vaPosition, modelViewMatrix without declaring them beforehand; oh well, spoiled by OptiFine
+//            // Could be put in addMacroLines above, or check below whether vaPosition is used, etc. Lazy to optimize, just put it here
 //            if (!macros.contains(MACRO_CORE[0])) {
 //                for (ShaderMacro macro : MACRO_CORE) {
 //                    macros.add(macro);
@@ -1616,7 +1616,7 @@ public class Hook extends DummyModContainer {
         public static int preDrawArray(int drawMode, BufferBuilder builder) {
             if ((drawMode == GL11.GL_LINES || drawMode == GL11.GL_LINE_STRIP)
                     && Shaders.activeProgram != Shaders.ProgramNone) {
-                lastProgram = Shaders.activeProgram; // 要用作判断所以不用pushProgram
+                lastProgram = Shaders.activeProgram; // Used for condition check, so don't use pushProgram
 
                 Shaders.useProgram(programLine);
 
@@ -1741,9 +1741,9 @@ public class Hook extends DummyModContainer {
 
         // WorldVertexBufferUploader.draw
         public static boolean shouldConvertQuads(int drawMode) {
-            return drawMode == GL11.GL_LINES // 线段类型
-                    && Shaders.activeProgram != Shaders.ProgramNone // 正在渲染游戏
-                    && programLine.getRealProgramName().equals(programLine.getName()); // 着色器存在
+            return drawMode == GL11.GL_LINES // Line type
+                    && Shaders.activeProgram != Shaders.ProgramNone // Currently rendering game
+                    && programLine.getRealProgramName().equals(programLine.getName()); // Shader exists
         }
     }
 
@@ -1765,7 +1765,7 @@ public class Hook extends DummyModContainer {
         }
     }
 
-// ====== 各向异性过滤 ======
+// ====== Anisotropic Filtering ======
 
     public static class AnisotropicFilter {
 
@@ -1908,30 +1908,30 @@ public class Hook extends DummyModContainer {
     // TODO
     public static enum RenderStage {
 
-        NONE, // 无状态
-        SKY, // 天空
-        SUNSET, // 晚霞
-        CUSTOM_SKY, // 自定义天空
-        SUN, // 日
-        MOON, // 月
-        STARS, // 星
-        VOID, // 虚空
-        TERRAIN_SOLID, // 实心方块
-        TERRAIN_CUTOUT_MIPPED, // 有空隙的方块（树叶等）（Mipmap）
-        TERRAIN_CUTOUT, // 同上但无Mipmap
-        ENTITIES, // 实体
-        BLOCK_ENTITIES, // 实体方块
-        DESTROY, // 方块破坏动画
-        OUTLINE, // 方块描边
-        DEBUG, // 区块边界调试
-        HAND_SOLID, // 不透明物品
-        TERRAIN_TRANSLUCENT, // 半透明方块
-        TRIPWIRE, // 绊线，texturedLit
-        PARTICLES, // 粒子
-        CLOUDS, // 云
-        RAIN_SNOW, // 雨雪
-        WORLD_BORDER, // 世界边界
-        HAND_TRANSLUCENT; // 半透明物品
+        NONE, // No state
+        SKY, // Sky
+        SUNSET, // Sunset
+        CUSTOM_SKY, // Custom Sky
+        SUN, // Sun
+        MOON, // Moon
+        STARS, // Stars
+        VOID, // Void
+        TERRAIN_SOLID, // Solid blocks
+        TERRAIN_CUTOUT_MIPPED, // Blocks with gaps (leaves, etc.) (Mipmap)
+        TERRAIN_CUTOUT, // Same as above but no Mipmap
+        ENTITIES, // Entities
+        BLOCK_ENTITIES, // Block entities
+        DESTROY, // Block breaking animation
+        OUTLINE, // Block outline
+        DEBUG, // Chunk boundary debug
+        HAND_SOLID, // Opaque held items
+        TERRAIN_TRANSLUCENT, // Translucent blocks
+        TRIPWIRE, // Tripwire, texturedLit
+        PARTICLES, // Particles
+        CLOUDS, // Clouds
+        RAIN_SNOW, // Rain and snow
+        WORLD_BORDER, // World border
+        HAND_TRANSLUCENT; // Translucent held items
 
         // ShaderMacros.getExtensions
         public static ShaderMacro[] addRenderStageMacros(ShaderMacro[] macros) {
@@ -1946,7 +1946,7 @@ public class Hook extends DummyModContainer {
             return result;
         }
 
-        // 太多了不写了
+        // Too many, won't write them all
         public static void setRenderStage(RenderStage stage) {
             if (Shaders.shaderPackLoaded && Shaders.isRenderingWorld) {
                 renderStage = stage;
@@ -1956,7 +1956,7 @@ public class Hook extends DummyModContainer {
         }
     }
 
-// ====== 补全shaders.properties光影配置宏 ======
+// ====== Complete shaders.properties shader config macros ======
 
     public static class PropertyFix {
 
@@ -2049,7 +2049,7 @@ public class Hook extends DummyModContainer {
                                         ah = Integer.parseInt(values[1]);
                                     } catch (NumberFormatException ex) {}
 
-                                    if (aw >= 0 && ah >= 0) { // 等于0是什么鬼啦，算了直接抄过来懒得管了
+                                    if (aw >= 0 && ah >= 0) { // What the heck does equal 0 mean, whatever, copied directly and too lazy to care
                                         isRelative[i] = false;
                                         bufferSize[i] = new float[] { aw, ah };
                                         SMCLog.info("Fixed size " + s1 + ": " + aw + " " + ah);
@@ -2062,7 +2062,7 @@ public class Hook extends DummyModContainer {
                                             rh = Float.parseFloat(values[1]);
                                         } catch (NumberFormatException ex) {}
 
-                                        if (rw >= 0F && rh >= 0F) { // 这里也不做一下是不是1.0的判断= =虽然正常来讲没啥光影作者会设1.0吧
+                                        if (rw >= 0F && rh >= 0F) { // Doesn't check if it's 1.0 either = = though normally no shader author would set 1.0
                                             isRelative[i] = true;
                                             bufferSize[i] = new float[] { rw, rh };
                                             SMCLog.info("Relative size " + s1 + ": " + rw + " " + rh);
@@ -2251,7 +2251,7 @@ public class Hook extends DummyModContainer {
 
     }
 
-// ====== at_midBlock 和屏蔽 at_velocity ======
+// ====== at_midBlock and suppress at_velocity ======
 
     public static class VertexAttribute {
 
@@ -2267,7 +2267,7 @@ public class Hook extends DummyModContainer {
         // Shaders.setupProgram
         public static void bindAttributes(int programID) {
             if (progUseVelocityAttrib) {
-                // 只是用于屏蔽，没有写入数据，不屏蔽的话鬼知道它会绑定到哪个location上，PTGI HRR 3的实体都变得跟闪电侠似的
+                // Only used for suppression, no data written. Without suppression, who knows which location it binds to; entities in PTGI HRR 3 looked like The Flash
                 ARBVertexShader.glBindAttribLocationARB(programID, velocityAttrib, "at_velocity");
                 Shaders.checkGLError("at_velocity");
             }
@@ -2473,7 +2473,7 @@ public class Hook extends DummyModContainer {
                     if (color != null) {
                         GL11.glClearColor(color.getX(), color.getY(), color.getZ(), color.getW());
                     }
-//                    高版本也只清空了A面，甚至有的光影用这个bug才能正常运行= =
+//                    Newer versions also only clear side A, and some shaders even rely on this bug to run properly = =
 //                    EXTFramebufferObject.glFramebufferTexture2DEXT(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0 + i, GL11.GL_TEXTURE_2D, sfbColorTexturesFlip.getB(i), 0);
 //                    GL20.glDrawBuffers(GL30.GL_COLOR_ATTACHMENT0 + i);
 //                    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
@@ -2511,9 +2511,9 @@ public class Hook extends DummyModContainer {
 
             @Override
             public void flip(int index) {
-                // 因为我懒得把所有的sfbColorTextures都改成sfbColorTexturesFlip
-                // 人呐，要学会偷懒
-                // 尽管这个模组现在还能运行已经是奇迹了
+                // Because I'm too lazy to change all sfbColorTextures to sfbColorTexturesFlip
+                // People need to learn how to be lazy
+                // Even though it's already a miracle this mod still runs
                 int flipped = this.textures.get(index + 2);
 
                 this.textures.put(index + 2, this.textures.get(index));
@@ -2594,7 +2594,7 @@ public class Hook extends DummyModContainer {
             }
         }
 
-        // 你可能好奇为什么MC源码里没有这个方法，因为这是我用asm写进去的
+        // You might wonder why this method doesn't exist in MC source code, because I wrote it in using ASM
         private static void applyCurrentBlend() {
             if (applyCurrentBlend == null) {
                 applyCurrentBlend = getMethod(GlStateManager.class, "applyCurrentBlend");
@@ -2630,7 +2630,7 @@ public class Hook extends DummyModContainer {
         }
     }
 
-    // ====== 计算着色器 ======
+    // ====== Compute Shaders ======
 
     public static class ComputeShader {
 
@@ -2900,7 +2900,7 @@ public class Hook extends DummyModContainer {
             if (getDfb() != 0) { // ?
                 boolean sp = Shaders.isShadowPass;
 
-                // 临时屏蔽ShadowPass防止useProgram开头直接给改成ProgramShadow了= =啊Gbuffers没有计算着色器所以大丈夫
+                // Temporarily suppress ShadowPass to prevent useProgram from immediately changing to ProgramShadow at the beginning = = ah Gbuffers has no compute shaders so it's fine
                 Shaders.isShadowPass = false;
                 Shaders.useProgram(cp);
                 Shaders.isShadowPass = sp;
@@ -2950,7 +2950,7 @@ public class Hook extends DummyModContainer {
                     Class<?> clazz = Class.forName("mchorse.aperture.client.AsmShaderHandler");
 
                     apertureResolveIncludes = Optional.of(getMethod(clazz, "getCachedShader", Object.class, String.class, IShaderPack.class, int.class, List.class, int.class));
-                    LOGGER.info("已检测到可兼容的 Aperture 模组");
+                    LOGGER.info("Detected compatible Aperture mod");
                 } catch (Exception e) {
                     apertureResolveIncludes = Optional.empty();
                 }
@@ -3250,7 +3250,7 @@ public class Hook extends DummyModContainer {
 
     }
 
-// ====== block.properties 修复 ======
+// ====== block.properties Fix ======
 
     public static class BlockAliasFix {
 
@@ -3353,7 +3353,7 @@ public class Hook extends DummyModContainer {
 
     }
 
-// ====== 自定义Uniform增加变量 ======
+// ====== Add variables to custom Uniforms ======
 
     public static class CustomUniform {
 
@@ -3452,7 +3452,7 @@ public class Hook extends DummyModContainer {
         }
     }
 
-// ====== 相机坐标修正 ======
+// ====== Camera Coordinate Fix ======
 
     public static class CameraFix {
 
@@ -3505,7 +3505,7 @@ public class Hook extends DummyModContainer {
         }
     }
 
-// ====== 修复光影包语言文件破Bug ======
+// ====== Fix shaderpack language file bug ======
 
     public static class LangFix {
 
@@ -3522,82 +3522,82 @@ public class Hook extends DummyModContainer {
         }
     }
 
-// ====== 模组信息 ======
+// ====== Mod Info ======
 
     public Hook() {
         super(new ModMetadata());
 
         ModMetadata meta = this.getMetadata();
         meta.modId = "advancedshader";
-        meta.name = "光影前向兼容AdvancedShader";
+        meta.name = "AdvancedShader - Shader Forward Compatibility";
         meta.version = "1.0-FINAL";
-        meta.credits += "\n致谢：";
-        meta.credits += "\n  在我最孤单时陪着我的朋友： ネムロイ、阳炘 （没有他们就没有这个模组了哦）";
-        meta.credits += "\n  内测参与者： Surisen（内测的神， 几乎所有严重Bug都是这位发现的）、ExDragine（宣发支持）、GeForceLegend（Bug提交者）、villa_qi（Bug提交者）、EpsilonSatoshi、少修、奥维利亚two";
-        meta.authorList = ImmutableList.of("一只猫", "I have no name", "I am but two days old", "you can call me V", "and this is POWER!");
-        meta.description += TextFormatting.RED + "" + TextFormatting.BOLD + "<由于作者身体原因， 本模组不再进行维护与更新， 如有Bug， 凑合用吧~>\n" + TextFormatting.RESET;
+        meta.credits += "\nAcknowledgements:";
+        meta.credits += "\n  Friends who accompanied me when I was loneliest: Nemuroi, Yang Xin (without them, this mod wouldn't exist)";
+        meta.credits += "\n  Beta testers: Surisen (God of beta testing, who discovered almost all severe bugs), ExDragine (promotional support), GeForceLegend (bug submitter), villa_qi (bug submitter), EpsilonSatoshi, Shao Xiu, Ovelia two";
+        meta.authorList = ImmutableList.of("A Cat", "I have no name", "I am but two days old", "you can call me V", "and this is POWER!");
+        meta.description += TextFormatting.RED + "" + TextFormatting.BOLD + "<Due to the author's health reasons, this mod is no longer maintained or updated. If there are bugs, make do with it~>\n" + TextFormatting.RESET;
         meta.description += "\n";
-        meta.description += "“有欲望而无行动者滋生瘟疫。”\n";
-        meta.description += "这就是为什么我写了这个模组\n";
-        meta.description += "这是一个很简单的模组， 只是让你能在这里使用Minecraft 1.16.5+光影， 仅此而已。\n";
+        meta.description += "\"He who desires but acts not, breeds pestilence.\"\n";
+        meta.description += "That's why I wrote this mod.\n";
+        meta.description += "This is a very simple mod, just to let you use Minecraft 1.16.5+ shaders here, nothing more.\n";
         meta.description += "\n";
-        meta.description += "如果有奇奇怪怪的渲染问题请尝试将渲染机制在1.12.2和1.16.5之间反复横跳\n";
-        meta.description += "如果草方块像摇曳鳗一样晃起来了的话请将方块ID设为1.16.5\n";
-        meta.description += "如果你想知道什么时候会被游戏的惊悚声音吓一跳的话请将氛围值机制设为1.16.5并打开F3\n";
+        meta.description += "If there are bizarre rendering issues, try toggling the rendering mechanism back and forth between 1.12.2 and 1.16.5.\n";
+        meta.description += "If grass blocks start swaying like garden eels, set the block ID to 1.16.5.\n";
+        meta.description += "If you want to know when the game's spooky ambient sounds might jump-scare you, set player mood mechanism to 1.16.5 and press F3.\n";
         meta.description += "Have fun~\n";
         meta.description += "\n";
         meta.description += "\n";
-        meta.description += "支持特性：\n";
-        meta.description += " - 计算着色器与colorimg、 shadowcolorimg\n";
-        meta.description += " - RenderTargets注释和colortex8-15\n";
-        meta.description += " - Prepare预处理着色器和ShadowComp阴影后处理着色器\n";
-        meta.description += " - RenderStage渲染阶段Uniform变量\n";
-        meta.description += " - 1.17+的Core Profile （不支持alphaTestRef）\n";
-        meta.description += " - at_midBlock顶点属性\n";
-        meta.description += " - gbuffers_line线段着色器\n";
-        meta.description += " - 8 bits 与 16 bits 的整数型纹理格式\n";
-        meta.description += " - 100个后处理着色器 （#6530， 嗯……无力吐槽）\n";
-        meta.description += " - 阴影阶段渲染地形、实体、实体方块配置\n";
-        meta.description += " - size.buffer.<buffer>配置和blend.<program>.<buffer>配置\n";
+        meta.description += "Supported features:\n";
+        meta.description += " - Compute shaders and colorimg, shadowcolorimg\n";
+        meta.description += " - RenderTargets comments and colortex8-15\n";
+        meta.description += " - Prepare preprocessing shaders and ShadowComp shadow postprocessing shaders\n";
+        meta.description += " - RenderStage render stage uniform variable\n";
+        meta.description += " - 1.17+ Core Profile (alphaTestRef not supported)\n";
+        meta.description += " - at_midBlock vertex attribute\n";
+        meta.description += " - gbuffers_line line shader\n";
+        meta.description += " - 8 bits and 16 bits integer texture formats\n";
+        meta.description += " - 100 postprocessing shaders (#6530, well... no comments)\n";
+        meta.description += " - Terrain, entities, and block entities shadow stage rendering configurations\n";
+        meta.description += " - size.buffer.<buffer> and blend.<program>.<buffer> configurations\n";
         meta.description += "\n";
-        meta.description += "不支持特性：\n";
-        meta.description += " - at_velocity顶点属性 （没法写~不过我让它固定为0了）\n";
-        meta.description += " - 阴影视裁框剔除 （懒得写~）\n";
+        meta.description += "Unsupported features:\n";
+        meta.description += " - at_velocity vertex attribute (cannot be implemented~ but I fixed it to 0)\n";
+        meta.description += " - Shadow view frustum culling (too lazy to write~)\n";
         meta.description += "\n";
-        meta.description += "其他修改：\n";
-        meta.description += " - 增加渲染机制、方块ID、氛围值机制选项用以模拟高版本特性\n";
-        meta.description += " - 修复了无法正常加载压缩包内语言文件的破Bug （英文文件是en_US大小写混合， 其他语言是zh_cn这种全小写的， 文件名还区分大小写= =去死吧！）\n";
-        meta.description += " - 支持识别in顶点属性（以前好像不识别来着……？） \n";
-        meta.description += " - 支持同时开启光影与各向异性过滤\n";
-        meta.description += " - shaders.properties增加对光影选项宏的支持 （看着好像是没写完， 高版本已经有了， 顺便补一下吧）\n";
-        meta.description += " - 修复新版本JRE（8u292-b10之后）导致无法打开光影文件夹的问题\n";
-        meta.description += " - 修复block.properties无法正常匹配方块状态问题\n";
-        meta.description += " - 增加biome_category与biome_precipitation用于自定义Uniform\n";
-        meta.description += " - cameraPosition更改为实际相机位置\n";
-        meta.description += " - 修改物品侧面UV防止dfdx、dfdy返回0\n";
-        meta.description += " - 兼容Aperture模组 （但光影本身不兼容Aperture的则没办法= =）\n";
-        meta.description += " - 修复宏状态机的bug\n";
+        meta.description += "Other changes:\n";
+        meta.description += " - Added options for rendering mechanism, block ID, and player mood to simulate newer version features\n";
+        meta.description += " - Fixed bug where language files in zip archives failed to load (English is mixed case en_US, other languages are all-lowercase like zh_cn, and filenames are case-sensitive = = drop dead!)\n";
+        meta.description += " - Supported 'in' vertex attribute (seemed not recognized before...?) \n";
+        meta.description += " - Supported enabling both shaders and anisotropic filtering simultaneously\n";
+        meta.description += " - Added shader option macro support to shaders.properties (seemed incomplete, newer versions already have it, so patched it in)\n";
+        meta.description += " - Fixed issue where newer JRE versions (after 8u292-b10) caused failure to open shaderpacks folder\n";
+        meta.description += " - Fixed block.properties failing to match block states properly\n";
+        meta.description += " - Added biome_category and biome_precipitation for custom uniforms\n";
+        meta.description += " - Changed cameraPosition to actual camera position\n";
+        meta.description += " - Modified item side UVs to prevent dfdx and dfdy from returning 0\n";
+        meta.description += " - Compatible with Aperture mod (though if the shader itself is incompatible with Aperture, nothing can be done = =)\n";
+        meta.description += " - Fixed macro state machine bug\n";
         meta.description += "\n";
-        meta.description += "光影开发相关说明：\n";
-        meta.description += " - 光影内可通过 #ifdef MC_MOD_ADVANCED_SHADER 判断是否已加载此模组\n";
-        meta.description += " - Core Profile原理是将顶点属性和Uniform变量替换为宏， 并不是真的实现了Core Profile\n";
-        meta.description += "    - 为保证兼容性，只有光影包 “使用” 了chunkOffset变量的情况才会将此偏移从gl_ModelViewMatrix中分离出来\n";
-        meta.description += " - 如果光影包提供了gbuffers_line着色器， 游戏将会用三角形/四边形模式渲染线段， 同1.17+一致 （为什么OF没有传入线宽度？？）\n";
-        meta.description += "    - 如果没有gbuffers_line， 则会在gbuffers_basic里用线段模式渲染\n";
-        meta.description += "    - 请参考原版1.17自带rendertype_line.vsh着色器文件来编写顶点着色器\n";
-        meta.description += " - 开启各向异性过滤后， 游戏会执行以下操作 （当然也是同高版本OF一致啦= =）\n";
+        meta.description += "Shader development notes:\n";
+        meta.description += " - In shaders, #ifdef MC_MOD_ADVANCED_SHADER can be used to check if this mod is loaded\n";
+        meta.description += " - Core Profile works by replacing vertex attributes and uniforms with macros, not a true Core Profile implementation\n";
+        meta.description += "    - To ensure compatibility, chunkOffset is only separated from gl_ModelViewMatrix if the shaderpack \"uses\" the chunkOffset variable\n";
+        meta.description += " - If the shaderpack provides a gbuffers_line shader, the game will render lines in triangle/quad mode, consistent with 1.17+ (why didn't OF pass line width??)\n";
+        meta.description += "    - If gbuffers_line is not present, lines are rendered in gbuffers_basic using line mode\n";
+        meta.description += "    - Please refer to vanilla 1.17's rendertype_line.vsh shader file to write vertex shaders\n";
+        meta.description += " - When anisotropic filtering is enabled, the game performs the following (also consistent with newer OF = =):\n";
         meta.description += "    - #define MC_ANISOTROPIC_FILTERING 2-16\n";
-        meta.description += "    - 依次根据纹理分组渲染方块， UV也会做相应修改\n";
-        meta.description += "    - 向spriteBounds Uniform变量写入当前方块所使用的纹理在textures/atlas/blocks.png中的坐标\n";
-        meta.description += " - 渲染机制设为1.16.5之后\n";
-        meta.description += "    - 着色器中的MC_VERSION将被定义为11605， block.properties等文件不受影响\n";
-        meta.description += "    - 游戏将使用高版本的渲染顺序， 例如绊线方块、粒子、云会在半透明方块之后渲染\n";
-        meta.description += "    - 绊线会调用gbuffers_textured_lit着色器而不是gbuffers_water， 并拥有独立的RenderStage\n";
-        meta.description += " - 方块ID设为1.16.5之后\n";
-        meta.description += "    - block/item/entity.properties中的MC_VERSION将被定义为11605， 并会在加载过程中对ID进行转换\n";
-        meta.description += " - 氛围值机制设为1.16.5之后\n";
-        meta.description += "    - 将使用高版本氛围值机制控制环境音效， 并且使光影中的playerMood可用\n";
-        meta.description += " - 这个模组优先考虑的是让不懂开发光影玩家能直接使用高版本光影，所以有些机制设计可能对光影开发者不友好，还请见谅~\n";
+        meta.description += "    - Renders blocks grouped by texture in sequence, with UVs adjusted accordingly\n";
+        meta.description += "    - Writes coordinates of current block's texture in textures/atlas/blocks.png to spriteBounds uniform\n";
+        meta.description += " - When rendering mechanism is set to 1.16.5:\n";
+        meta.description += "    - MC_VERSION in shaders will be defined as 11605, while block.properties etc. remain unaffected\n";
+        meta.description += "    - The game uses newer version render order, e.g. tripwires, particles, clouds are rendered after translucent blocks\n";
+        meta.description += "    - Tripwires call gbuffers_textured_lit shader instead of gbuffers_water, and have an independent RenderStage\n";
+        meta.description += " - When block ID is set to 1.16.5:\n";
+        meta.description += "    - MC_VERSION in block/item/entity.properties will be defined as 11605, and IDs will be converted during loading\n";
+        meta.description += " - When player mood mechanism is set to 1.16.5:\n";
+        meta.description += "    - Newer version mood mechanism is used to control ambient sound effects, and playerMood in shaders becomes available\n";
+        meta.description += " - This mod prioritizes allowing non-developer players to use newer shaders directly, so some design choices might not be friendly to shader developers, please understand~\n";
     }
 
     @Override

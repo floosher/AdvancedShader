@@ -11,7 +11,7 @@ public class WorldClientPatcher extends Patcher {
 
     @MethodPatch("j()V")
     public void updateBlocks(MethodNode method) {
-        patch("增加氛围值机制", method,
+        patch("Add player mood mechanism", method,
                 ByteCode.ALoad(0),
                 ByteCode.Dup(),
                 ByteCode.GetField("bsb", "O", "I"),
@@ -29,7 +29,7 @@ public class WorldClientPatcher extends Patcher {
     public void playMoodSoundAndCheckLight(MethodNode method) {
         LabelNode label = ByteCode.Label();
 
-        patch("增加氛围值机制", method,
+        patch("Add player mood mechanism", method,
                 inject(ByteCode.InvokeStatic(FORWARDFEATURES, "skipMoodCheck", "()Z")),
                 inject(ByteCode.IfNotZero(label)),
                 ByteCode.ALoad(10),
