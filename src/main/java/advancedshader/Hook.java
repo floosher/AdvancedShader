@@ -70,6 +70,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.I18n;
@@ -85,9 +86,11 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.client.FMLFileResourcePack;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModMetadata;
 import net.optifine.ConnectedProperties;
 import net.optifine.config.ConnectedParser;
@@ -764,11 +767,31 @@ public class Hook extends DummyModContainer {
 
     public static class ForwardFeatures {
 
-        public static final BlockRenderLayer TRIPWIRE = BlockRenderLayer.valueOf("TRIPWIRE");
+        public static final BlockRenderLayer TRIPWIRE;
 
         private static final Map<String, BlockMapper> idMap;
 
         static {
+            BlockRenderLayer layer = null;
+
+            for (BlockRenderLayer value : BlockRenderLayer.values()) {
+                if (value != null && value.name().equals("TRIPWIRE")) {
+                    layer = value;
+
+                    break;
+                }
+            }
+
+            if (layer == null) {
+                try {
+                    layer = EnumHelper.addEnum(BlockRenderLayer.class, "TRIPWIRE", new Class<?>[]{String.class}, "Tripwire");
+                } catch (Throwable t) {
+                    LOGGER.warn("Unable to register the Tripwire render layer, the newer version tripwire rendering will be disabled", t);
+                }
+            }
+
+            TRIPWIRE = layer;
+
             Map<String, BlockMapper> map = null;
 
             try {
@@ -789,6 +812,10 @@ public class Hook extends DummyModContainer {
 
         // EntityAliases.reset
         public static int lightningID = -1;
+
+        // The Tripwire render layer has to exist before the first RegionRenderCacheBuilder is created,
+        // because its buffer array is sized by BlockRenderLayer.values().length
+        public static void init() {}
 
         // GuiButtonEnumShaderOption.getButtonText
         public static String getButtonText(EnumShaderOption option) {
@@ -959,18 +986,50 @@ public class Hook extends DummyModContainer {
 
         // RenderChunk.fixBlockLayer
         public static BlockRenderLayer replaceRenderLayer(IBlockState state, BlockRenderLayer layer) {
-            if (isForwardVersion() && state.getBlock() == Blocks.TRIPWIRE) {
+            if (isForwardVersion() && TRIPWIRE != null && state.getBlock() == Blocks.TRIPWIRE) {
                 return TRIPWIRE;
             }
 
             return layer;
         }
 
+        // RegionRenderCacheBuilder.<init>
+        public static void addTripwireRenderer(BufferBuilder[] renderers) {
+            if (TRIPWIRE == null || renderers == null) {
+                return;
+            }
+
+            int index = TRIPWIRE.ordinal();
+
+            if (index < 0 || index >= renderers.length || renderers[index] != null) {
+                return;
+            }
+
+            renderers[index] = new BufferBuilder(0x40000);
+        }
+
+        // EntityRenderer.renderWorldPass
+        public static void renderTripwireTerrain(RenderGlobal renderGlobal, double partialTicks, int pass, Entity entity) {
+            if (TRIPWIRE == null || renderGlobal == null) {
+                return;
+            }
+
+            try {
+                beginTripwire();
+                renderGlobal.renderBlockLayer(TRIPWIRE, partialTicks, pass, entity);
+            } finally {
+                endTripwire();
+            }
+        }
+
         // BlockRenderLayer.values
         public static BlockRenderLayer[] getBlockRenderLayers(BlockRenderLayer[] layers) {
+            if (layers == null || TRIPWIRE == null) {
+                return layers;
+            }
+
             StackTraceElement[] elements = new Exception().getStackTrace();
-            StackTraceElement element = elements[2];
-            String clazz = element.getClassName();
+            String clazz = elements.length > 2 ? elements[2].getClassName() : "";
 
             boolean ie = false;
 
@@ -1000,9 +1059,9 @@ public class Hook extends DummyModContainer {
 
         // MinecraftForgeClient.getRenderLayer
         public static BlockRenderLayer getRenderLayer(BlockRenderLayer layer) {
-            if (layer == TRIPWIRE) {
-                StackTraceElement element = new Exception().getStackTrace()[2];
-                String clazz = element.getClassName();
+            if (TRIPWIRE != null && layer == TRIPWIRE) {
+                StackTraceElement[] elements = new Exception().getStackTrace();
+                String clazz = elements.length > 2 ? elements[2].getClassName() : "";
 
                 if (!clazz.startsWith("java.")
                         && !clazz.startsWith("sun.")
@@ -1775,7 +1834,7 @@ public class Hook extends DummyModContainer {
         public static void preUploadDisplayList(BlockRenderLayer layer) {
             if (layer == BlockRenderLayer.TRANSLUCENT) {
                 uniformSpriteBounds.setProgram(Shaders.ProgramWater.getId());
-            } else if (layer == ForwardFeatures.TRIPWIRE) {
+            } else if (ForwardFeatures.TRIPWIRE != null && layer == ForwardFeatures.TRIPWIRE) {
                 uniformSpriteBounds.setProgram(Shaders.ProgramTexturedLit.getId());
             } else {
                 uniformSpriteBounds.setProgram(Shaders.ProgramTerrain.getId());
@@ -2254,6 +2313,163 @@ public class Hook extends DummyModContainer {
 // ====== at_midBlock and suppress at_velocity ======
 
     public static class VertexAttribute {
+
+        private static final int TERRAIN_VERTEX_SIZE = 56;
+        private static final int MIDBLOCK_OFFSET = 52;
+
+        private static final String[] FOREIGN_CHUNK_RENDERER_MODS = new String[] {
+                "nothirium", "sodium", "embeddium", "rubidium", "vintagium" };
+
+        private static final String[] FOREIGN_CHUNK_RENDERERS = new String[] {
+                "meldexun.nothirium.mc.renderer.chunk.MinecraftChunkRenderer",
+                "meldexun.nothirium.mc.renderer.chunk.ChunkRendererGL15",
+                "me.jellysquid.mods.sodium.client.render.SodiumWorldRenderer" };
+
+        private static Boolean midBlockSupported = null;
+        private static boolean midBlockPointerValid = false;
+        private static boolean loggedForeignVertexFormat = false;
+
+        // Third party chunk renderers build their own terrain buffers and never write at_midBlock data,
+        // enabling the attribute array would make every terrain draw call read out of bounds
+        private static boolean isMidBlockSupported() {
+            Boolean supported = midBlockSupported;
+
+            if (supported != null) {
+                return supported.booleanValue();
+            }
+
+            String property = System.getProperty("advancedshader.midBlock");
+
+            if (property != null) {
+                supported = Boolean.valueOf(Boolean.parseBoolean(property));
+                midBlockSupported = supported;
+
+                LOGGER.info("The at_midBlock vertex attribute is {} by system property", supported.booleanValue() ? "enabled" : "disabled");
+
+                return supported.booleanValue();
+            }
+
+            String found = null;
+
+            for (String mod : FOREIGN_CHUNK_RENDERER_MODS) {
+                try {
+                    if (Loader.isModLoaded(mod)) {
+                        found = mod;
+
+                        break;
+                    }
+                } catch (Throwable ignored) {}
+            }
+
+            if (found == null) {
+                for (String clazz : FOREIGN_CHUNK_RENDERERS) {
+                    try {
+                        Class.forName(clazz, false, Hook.class.getClassLoader());
+
+                        found = clazz;
+
+                        break;
+                    } catch (Throwable ignored) {}
+                }
+            }
+
+            supported = Boolean.valueOf(found == null);
+
+            if (found != null) {
+                LOGGER.info("Detected a third party chunk renderer ({}), disabling the at_midBlock vertex attribute", found);
+            }
+
+            if (!supported.booleanValue() || areModsLoaded()) {
+                midBlockSupported = supported;
+            }
+
+            return supported.booleanValue();
+        }
+
+        private static boolean areModsLoaded() {
+            try {
+                return !Loader.instance().getActiveModList().isEmpty();
+            } catch (Throwable t) {
+                return false;
+            }
+        }
+
+        // Foreign chunk renderers pack their vertices into their own layout, a mismatching buffer size proves
+        // the bound terrain buffer does not carry the OptiFine vertex format at_midBlock lives in
+        private static boolean hasTerrainVertexFormat() {
+            int size;
+
+            try {
+                size = GL15.glGetBufferParameteri(GL15.GL_ARRAY_BUFFER, GL15.GL_BUFFER_SIZE);
+            } catch (Throwable t) {
+                return true;
+            }
+
+            if (size <= 0 || size % TERRAIN_VERTEX_SIZE == 0) {
+                return true;
+            }
+
+            if (!loggedForeignVertexFormat) {
+                loggedForeignVertexFormat = true;
+
+                LOGGER.info("A foreign terrain vertex format was detected (buffer size {}), skipping the at_midBlock vertex attribute", size);
+            }
+
+            return false;
+        }
+
+        // ShadersRender.preRenderChunkLayer, SVertexBuilder.drawArrays
+        public static void enableMidBlockAttrib() {
+            // Only geometry the pointer was set up for carries at_midBlock data, everything else would read out of bounds
+            if (midBlockPointerValid && isMidBlockSupported()) {
+                GL20.glEnableVertexAttribArray(midBlockAttrib);
+            } else {
+                GL20.glDisableVertexAttribArray(midBlockAttrib);
+            }
+        }
+
+        // ShadersRender.postRenderChunkLayer, SVertexBuilder.drawArrays
+        public static void disableMidBlockAttrib() {
+            GL20.glDisableVertexAttribArray(midBlockAttrib);
+        }
+
+        // ShadersRender.setupArrayPointersVbo
+        public static void setupMidBlockAttribPointer() {
+            midBlockPointerValid = false;
+
+            if (isMidBlockSupported() && hasTerrainVertexFormat()) {
+                GL20.glVertexAttribPointer(midBlockAttrib, 3, GL11.GL_BYTE, false, TERRAIN_VERTEX_SIZE, MIDBLOCK_OFFSET);
+                GL20.glEnableVertexAttribArray(midBlockAttrib);
+
+                midBlockPointerValid = true;
+            } else {
+                // The pointer of a previous draw call would still be used, so the attribute array has to be turned off
+                GL20.glDisableVertexAttribArray(midBlockAttrib);
+            }
+        }
+
+        // SVertexBuilder.drawArrays
+        public static void setupMidBlockAttribPointer(int stride, ByteBuffer buffer) {
+            midBlockPointerValid = false;
+
+            // Only the terrain vertex format holds at_midBlock, block entities and entities use shorter vertices
+            if (isMidBlockSupported()
+                    && stride == TERRAIN_VERTEX_SIZE
+                    && buffer != null
+                    && buffer.limit() >= MIDBLOCK_OFFSET + 3) {
+                int position = buffer.position();
+
+                buffer.position(MIDBLOCK_OFFSET);
+                GL20.glVertexAttribPointer(midBlockAttrib, 3, GL11.GL_BYTE, false, stride, buffer);
+                buffer.position(position);
+
+                GL20.glEnableVertexAttribArray(midBlockAttrib);
+
+                midBlockPointerValid = true;
+            } else {
+                GL20.glDisableVertexAttribArray(midBlockAttrib);
+            }
+        }
 
         // Shaders.createVertShader
         public static void checkAttributes(ShaderLine line) {
@@ -3602,6 +3818,8 @@ public class Hook extends DummyModContainer {
 
     @Override
     public boolean registerBus(EventBus bus, LoadController controller) {
+        ForwardFeatures.init();
+
         return true;
     }
 

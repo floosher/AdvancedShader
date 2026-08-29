@@ -196,16 +196,12 @@ public class EntityRendererPatcher extends Patcher {
                 ByteCode.Label(),
                 ByteCode.LineNumber(),
                 ByteCode.Frame(),
-                inject(ByteCode.InvokeStatic(FORWARDFEATURES, "beginTripwire", "()V")),
                 inject(ByteCode.ALoad(6)),
-                inject(ByteCode.GetStatic(FORWARDFEATURES, "TRIPWIRE", "Lamm;")),
                 inject(ByteCode.FLoad(2)),
                 inject(ByteCode.F2D()),
                 inject(ByteCode.ILoad(1)),
                 inject(ByteCode.ALoad(11)),
-                inject(ByteCode.InvokeVirtual("buy", "a", "(Lamm;DILvg;)I")),
-                inject(ByteCode.Pop()),
-                inject(ByteCode.InvokeStatic(FORWARDFEATURES, "endTripwire", "()V")),
+                inject(ByteCode.InvokeStatic(FORWARDFEATURES, "renderTripwireTerrain", "(Lbuy;DILvg;)V")),
                 ByteCode.GetStatic("net/optifine/reflect/Reflector", "ForgeHooksClient_setRenderPass", "Lnet/optifine/reflect/ReflectorMethod;"));
 
         patch("Newer version rendering mechanism - Postpone particle rendering part 3", method,

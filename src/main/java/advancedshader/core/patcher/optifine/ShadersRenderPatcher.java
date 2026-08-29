@@ -74,8 +74,7 @@ public class ShadersRenderPatcher extends Patcher {
         patch("Bind at_midBlock vertex attribute", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "entityAttrib", "I"),
                 ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glEnableVertexAttribArray", "(I)V"),
-                inject(ByteCode.GetStatic(HOOK, "midBlockAttrib", "I")),
-                inject(ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glEnableVertexAttribArray", "(I)V")));
+                inject(ByteCode.InvokeStatic(VERTEXATTRIBUTE, "enableMidBlockAttrib", "()V")));
     }
 
     @MethodPatch("postRenderChunkLayer(Lamm;)V")
@@ -83,8 +82,7 @@ public class ShadersRenderPatcher extends Patcher {
         patch("Unbind at_midBlock vertex attribute", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "entityAttrib", "I"),
                 ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glDisableVertexAttribArray", "(I)V"),
-                inject(ByteCode.GetStatic(HOOK, "midBlockAttrib", "I")),
-                inject(ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glDisableVertexAttribArray", "(I)V")));
+                inject(ByteCode.InvokeStatic(VERTEXATTRIBUTE, "disableMidBlockAttrib", "()V")));
     }
 
     @MethodPatch("setupArrayPointersVbo()V")
@@ -97,13 +95,7 @@ public class ShadersRenderPatcher extends Patcher {
                 ByteCode.BIPush(56),
                 ByteCode.Ldc(48L),
                 ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glVertexAttribPointer", "(IIIZIJ)V"),
-                inject(ByteCode.GetStatic(HOOK, "midBlockAttrib", "I")),
-                inject(ByteCode.IConst(3)),
-                inject(ByteCode.SIPush(GL11.GL_BYTE)),
-                inject(ByteCode.IConst(0)),
-                inject(ByteCode.BIPush(56)),
-                inject(ByteCode.Ldc(52L)),
-                inject(ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glVertexAttribPointer", "(IIIZIJ)V")));
+                inject(ByteCode.InvokeStatic(VERTEXATTRIBUTE, "setupMidBlockAttribPointer", "()V")));
     }
 
     @MethodPatch("beginTerrainSolid()V")

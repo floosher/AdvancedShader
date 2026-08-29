@@ -64,28 +64,19 @@ public class SVertexBuilderPatcher extends Patcher {
                 ByteCode.ILoad(5),
                 ByteCode.ALoad(6),
                 ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glVertexAttribPointer", "(IIIZILjava/nio/ByteBuffer;)V"),
-                inject(ByteCode.GetStatic(HOOK, "midBlockAttrib", "I")),
-                inject(ByteCode.IConst(3)),
-                inject(ByteCode.SIPush(GL11.GL_BYTE)),
-                inject(ByteCode.IConst(0)),
                 inject(ByteCode.ILoad(5)),
                 inject(ByteCode.ALoad(6)),
-                inject(ByteCode.BIPush(52)),
-                inject(ByteCode.InvokeVirtual("java/nio/ByteBuffer", "position", "(I)Ljava/nio/Buffer;")),
-                inject(ByteCode.CheckCast("java/nio/ByteBuffer")),
-                inject(ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glVertexAttribPointer", "(IIIZILjava/nio/ByteBuffer;)V")));
+                inject(ByteCode.InvokeStatic(VERTEXATTRIBUTE, "setupMidBlockAttribPointer", "(ILjava/nio/ByteBuffer;)V")));
 
         patch("Add at_midBlock vertex attribute part 2", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "entityAttrib", "I"),
                 ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glEnableVertexAttribArray", "(I)V"),
-                inject(ByteCode.GetStatic(HOOK, "midBlockAttrib", "I")),
-                inject(ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glEnableVertexAttribArray", "(I)V")));
+                inject(ByteCode.InvokeStatic(VERTEXATTRIBUTE, "enableMidBlockAttrib", "()V")));
 
         patch("Add at_midBlock vertex attribute part 3", method,
                 ByteCode.GetStatic("net/optifine/shaders/Shaders", "entityAttrib", "I"),
                 ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glDisableVertexAttribArray", "(I)V"),
-                inject(ByteCode.GetStatic(HOOK, "midBlockAttrib", "I")),
-                inject(ByteCode.InvokeStatic("org/lwjgl/opengl/GL20", "glDisableVertexAttribArray", "(I)V")));
+                inject(ByteCode.InvokeStatic(VERTEXATTRIBUTE, "disableMidBlockAttrib", "()V")));
     }
 
     @MethodPatch("pushEntity(Lawt;Let;Lamy;Lbuk;)V")
